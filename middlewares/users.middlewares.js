@@ -2,10 +2,14 @@
 const isLoggedIn = (req, res, next) => {
     const { Email, password } = req.body;
 
-    if (Email == 'admin' && password == 'admin') {
+    if (req.url == '/login' && Email == 'admin' && password == 'admin') {
         next();
     } else {
-        res.redirect('/login');
+        res.send(
+            // eslint-disable-next-line prettier/prettier
+            `<h3>user with Email -${Email} and Password - ${password} is requesting to access</h3>`,
+        );
+        // res.redirect('/login');
     }
 };
 

@@ -1,4 +1,4 @@
-const { route, router } = require('../app');
+// const { route, router } = require('../app');
 
 const getRegister = (req, res) => {
     res.SendFile('register.html', { root: './views/users' });
@@ -16,16 +16,8 @@ const getLogin = (req, res) => {
     // res.sendFile('styles.css', { root: './views/users' });
 };
 
-const getIndex = (req, res) => {
-    res.sendFile('index.html', {root:'./views/users'})
-}
-
 const getDashboard = (req, res) => {
     res.send('User Dashboard');
-};
-
-const getAbout = (req, res) => {
-    res.sendFile('about.html', { root: './views/users' });
 };
 
 module.exports = {
@@ -33,6 +25,4 @@ module.exports = {
     postRegister,
     getLogin,
     getDashboard,
-    getAbout,
-    getIndex
 };

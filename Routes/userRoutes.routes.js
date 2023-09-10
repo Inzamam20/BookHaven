@@ -9,8 +9,6 @@ const {
     postRegister,
     getLogin,
     getDashboard,
-    getAbout,
-    getIndex
 } = require('../controllers/userController.controllers');
 
 router.use(bodyParser.urlencoded({ extended: false }));
@@ -24,19 +22,16 @@ router.post('/login', isLoggedIn, (req, res) => {
     res.redirect('/dashboard');
 });
 
-router.get('/about', getAbout);
-router.get('/index', getIndex);
-
-router.get('/register', (req, res) => {
-    res.send('This is Register Page');
-});
-
 router.post('/login', (req, res) => {
     const { Email, password } = req.body;
     res.send(
         // eslint-disable-next-line prettier/prettier
         `<h3>user with Email -${Email} and Password - ${password} is requesting to access</h3>`,
     );
+});
+
+router.get('/register', (req, res) => {
+    res.send('This is Register Page');
 });
 
 module.exports = router;
