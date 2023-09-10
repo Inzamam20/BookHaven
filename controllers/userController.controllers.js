@@ -1,11 +1,19 @@
+/* eslint-disable comma-dangle */
 // const { route, router } = require('../app');
 
+const { use } = require('../app');
+
 const getRegister = (req, res) => {
-    res.SendFile('register.html', { root: './views/users' });
+    res.sendFile('signup.html', { root: './views/users' });
 };
 
-const postRegister = () => {};
-
+const postRegister = (req, res) => {
+    const { username, email, password } = req.body;
+    console.log(username);
+    res.send(
+        `<h2>user with ${username}\n Email: ${email}\n Password: ${password}\n  is trying to create an account`
+    );
+};
 const getLogin = (req, res) => {
     // res.send('This is Login Page');
     // const { id, username } = req.query;

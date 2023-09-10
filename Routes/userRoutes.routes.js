@@ -1,9 +1,11 @@
+/* eslint-disable comma-dangle */
 /* eslint-disable no-unused-vars */
 const express = require('express');
 const bodyParser = require('body-parser');
 
 const router = express.Router();
-const isLoggedIn = require('../middlewares/users.middlewares');
+// const isLoggedIn = require('../middlewares/users.middlewares');
+const middleWares = require('../middlewares/users.middlewares');
 const {
     getRegister,
     postRegister,
@@ -18,7 +20,9 @@ router.get('/login', getLogin);
 
 router.get('/dashboard', getDashboard);
 
-router.post('/login', isLoggedIn, (req, res) => {
+router.get('/register', getRegister);
+
+router.post('/login', middleWares.isLoggedIn, (req, res) => {
     res.redirect('/dashboard');
 });
 
@@ -30,8 +34,13 @@ router.post('/login', (req, res) => {
     );
 });
 
-router.get('/register', (req, res) => {
-    res.send('This is Register Page');
+router.post('/register', middleWares.alreadyMember, postRegister);
+
+router.post('/register', (req, res) => {
+    const { username, email, password } = req.body;
+    res.send(
+        `<h2>user with ${username}\n Email: ${email}\n Password: ${password}\n  is trying to create an account`
+    );
 });
 
 module.exports = router;
