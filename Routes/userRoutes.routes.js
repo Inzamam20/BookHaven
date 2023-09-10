@@ -9,6 +9,7 @@ const {
     postRegister,
     getLogin,
     getDashboard,
+    getAbout,
 } = require('../controllers/userController.controllers');
 
 router.use(bodyParser.urlencoded({ extended: false }));
@@ -21,6 +22,8 @@ router.get('/dashboard', getDashboard);
 router.post('/login', isLoggedIn, (req, res) => {
     res.redirect('/dashboard');
 });
+
+router.get('/about', getAbout);
 
 router.get('/register', (req, res) => {
     res.send('This is Register Page');

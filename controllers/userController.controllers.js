@@ -20,9 +20,14 @@ const getDashboard = (req, res) => {
     res.send('User Dashboard');
 };
 
+const getAbout = (req, res) => {
+    res.sendFile('about.html', { root: './views/users' });
+};
+
 module.exports = {
     getRegister,
     postRegister,
     getLogin,
     getDashboard,
+    getAbout,
 };

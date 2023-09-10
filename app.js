@@ -17,18 +17,13 @@ app.use(morgan('tiny'));
 app.use(express.static('public'));
 app.use(userRoutes);
 
+// The following code is Raw Node JS where we have to send the respond end message
+/*
 app.get('/', logger, (req, res) => {
     // res.statusCode(200);
     res.status(200).send('<h2>Home Page</h2>');
     res.end();
 });
-
-app.get('/about', (req, res) => {
-    // res.sendStatus(200);
-    res.status(201).send('<h2>About Page</h2>');
-    res.end();
-});
-
 app.get('/contact', (req, res) => {
     res.status(202).send('<h2>Contact Page</h2>');
     res.end();
@@ -38,5 +33,7 @@ app.use((req, res) => {
     res.status(401).send("Error 404! Page doesn't exist.");
     // res.send();
 });
+
+*/
 
 module.exports = app;
