@@ -10,6 +10,7 @@ const {
     getLogin,
     getDashboard,
     getAbout,
+    getIndex
 } = require('../controllers/userController.controllers');
 
 router.use(bodyParser.urlencoded({ extended: false }));
@@ -24,6 +25,7 @@ router.post('/login', isLoggedIn, (req, res) => {
 });
 
 router.get('/about', getAbout);
+router.get('/index', getIndex);
 
 router.get('/register', (req, res) => {
     res.send('This is Register Page');

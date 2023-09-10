@@ -16,6 +16,10 @@ const getLogin = (req, res) => {
     // res.sendFile('styles.css', { root: './views/users' });
 };
 
+const getIndex = (req, res) => {
+    res.sendFile('index.html', {root:'./views/users'})
+}
+
 const getDashboard = (req, res) => {
     res.send('User Dashboard');
 };
@@ -30,4 +34,5 @@ module.exports = {
     getLogin,
     getDashboard,
     getAbout,
+    getIndex
 };
