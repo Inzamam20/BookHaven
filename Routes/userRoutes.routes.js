@@ -11,6 +11,7 @@ const {
     postRegister,
     getLogin,
     getDashboard,
+    getHomePage,
 } = require('../controllers/userController.controllers');
 
 router.use(bodyParser.urlencoded({ extended: false }));
@@ -21,6 +22,8 @@ router.get('/login', getLogin);
 router.get('/dashboard', getDashboard);
 
 router.get('/register', getRegister);
+
+router.get('/', getHomePage);
 
 router.post('/login', middleWares.isLoggedIn, (req, res) => {
     res.redirect('/dashboard');

@@ -24,6 +24,10 @@ const getLogin = (req, res) => {
     // res.sendFile('styles.css', { root: './views/users' });
 };
 
+const getHomePage = (req, res) => {
+    res.sendFile('register.html', { root: './views/users' });
+};
+
 const getDashboard = (req, res) => {
     res.send('User Dashboard');
 };
@@ -33,4 +37,5 @@ module.exports = {
     postRegister,
     getLogin,
     getDashboard,
+    getHomePage,
 };

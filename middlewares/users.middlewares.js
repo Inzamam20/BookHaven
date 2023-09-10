@@ -16,16 +16,20 @@ const isLoggedIn = (req, res, next) => {
 };
 
 const alreadyMember = (req, res, next) => {
-    const { username, email, password } = req.body;
-    if (req.url == '/login') {
-        res.sendFile('login', { root: './views/users' });
-        console.log(username);
-        next();
+    if (req.method == 'POST') {
+        const { username, email, password } = req.body;
+        if (req.url == '/login') {
+            res.sendFile('login', { root: './views/users' });
+            console.log(username);
+            next();
+        } else {
+            res.send(
+                `<h2>user with ${username}\n Email: ${email}\n Password: ${password}\n  is trying to create an account`
+            );
+            console.log(username);
+        }
     } else {
-        res.send(
-            `<h2>user with ${username}\n Email: ${email}\n Password: ${password}\n  is trying to create an account`
-        );
-        console.log(username);
+        next();
     }
 };
 
