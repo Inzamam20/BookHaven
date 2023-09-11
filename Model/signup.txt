@@ -1,0 +1,5 @@
+CREATE TABLE `bookhaven`.`user_info` (
+  `Name` VARCHAR(40) NOT NULL,
+  `email` VARCHAR(40) NOT NULL,
+  `password` VARCHAR(32) NOT NULL,
+  PRIMARY KEY (`email`));

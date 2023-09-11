@@ -22,15 +22,22 @@
   </head>
   <body>
     <!-- <h2 class="register-font">Register</h2> -->
-    <!-- <div class="login-form"> -->
+    <div class="login-form">
     <div>
       <!-- <div class="text">Signup</div> -->
       <div class="register-font">SIGNUP</div>
-      <form action="/users/register" method="post">
+
+      <% if (errors.length>0) { %>
+      <div class="alert alert-danger">
+        <% errors.forEach ( error => { %> <%= error%> <br/> <% }) %>
+      </div>
+      <% } %>
+
+      <form action="/users/signup" method="POST">
         <div class="field">
           <!-- <div class="fas fa-user-circle"></div> -->
           <div class="fas fa-user"></div>
-          <input type="text" placeholder="Name" name="name" />
+          <input type="text" placeholder="Name" name="name" id="name" />
         </div>
         <div class="field">
           <div class="fas fa-envelope"></div>
@@ -46,7 +53,11 @@
         </div>
         <div class="field">
           <div class="fas fa-lock"></div>
-          <input type="text" placeholder="Confirm Password" />
+          <input
+            type="password"
+            placeholder="Confirm Password"
+            name="confirmPassword"
+          />
         </div>
         <button>CREATE ACCOUNT</button>
         <div class="link">

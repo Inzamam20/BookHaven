@@ -6,3 +6,6 @@
     <!-- Also we have pug engine                                         -->
 
 In ejs files href we have to start from the /
+
+
+res.redirect('login'); // in res.redirect dont need to specify the root

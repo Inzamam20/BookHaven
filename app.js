@@ -4,28 +4,16 @@ const express = require('express');
 
 const app = express();
 
-const morgan = require('morgan');
 const session = require('express-session');
 const flash = require('connect-flash');
-// const mySQL = require('mysql2');
+
+const morgan = require('morgan');
 
 // Static Resources
 app.use(express.static('public'));
 
 // View Engine
 app.set('view engine', 'ejs');
-
-// Routes
-const userRoutes = require('./Routes/userRoutes.routes');
-const indexRoutes = require('./Routes/indexRoutes.routes');
-
-app.use(indexRoutes);
-app.use('/users', userRoutes);
-
-// eslint-disable-next-line no-unused-vars
-const { logger, printSomething } = require('./middlewares/app.middlewares');
-// Connect to PlanetScale Database
-// const connection = mySQL.createConnection(process.env.DATABASE_URL);
 
 // Session and Flash
 app.use(
@@ -38,8 +26,33 @@ app.use(
 
 app.use(flash());
 
+// Body parser
+// To parse Data from HTML files body we need to use body-parser
+// and set the urlencoded to false
+app.use(express.urlencoded({ extended: false }));
+
+// Routes
+const userRoutes = require('./Routes/userRoutes.routes');
+const indexRoutes = require('./Routes/indexRoutes.routes');
+
+app.use(indexRoutes);
+app.use('/users', userRoutes);
+
+// eslint-disable-next-line no-unused-vars
+const { logger, printSomething } = require('./middlewares/app.middlewares');
+
 app.use(morgan('tiny'));
 
+// Test the Database Connection
+const connection = require('./util/database');
+
+connection.connect((error) => {
+    if (error) {
+        console.error('Error connecting to MySQL database:', error);
+    } else {
+        console.log('Connected to MySQL database!');
+    }
+});
 // app.get('/getMysqlStatus', (req, res) => {
 //     connection.ping((err) => {
 //         if (err) {
