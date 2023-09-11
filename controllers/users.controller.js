@@ -55,20 +55,18 @@ const postRegister = (req, res) => {
             (error, results, fields) => {
                 if (error) {
                     console.error(`An error occured: ${error.message}`);
+                    console.log('An error occured in the database');
                     errors.push(error.message);
                     req.flash('errors', errors);
                     res.redirect('signup');
                     results
                         .status(500)
                         .json({ status: 500, message: `An error occured: ${error.message}` });
-                } else if (response.length) {
-                    console.log('User already exist with this Email!');
+                } else if (results.length) {
+                    // console.log('User already exist with this Email!');
                     errors.push('User already exist with this Email');
                     req.flash('errors', errors);
                     res.redirect('signup');
-                    results
-                        .status(200)
-                        .json({ status: 200, message: 'User already exist with this Email.' });
                 } else {
                     // lets create the new account
                     // first we generate a salt using bcrypt - salt is basically a random string
@@ -78,9 +76,9 @@ const postRegister = (req, res) => {
                             req.flash('errors', errors);
                             res.redirect('signup');
                         } else {
-                            bcrypt.hash(password, salt, (err, hash) => {
+                            bcrypt.hash(password, salt, (errr, hash) => {
                                 if (err) {
-                                    errors.push(err.message);
+                                    errors.push(errr.message);
                                     req.flash('errors', errors);
                                     res.redirect('signup');
                                 } else {
@@ -88,8 +86,9 @@ const postRegister = (req, res) => {
                                         'INSERT INTO user_info VALUES (?, ?, ?)',
 
                                         [name, Email, hash],
-                                        (err, results) => {
-                                            console.log(results);
+                                        (er, result) => {
+                                            // console.log(result);
+                                            console.log('User Created Successfully');
                                             // console.log(err);
                                         },
                                     );
