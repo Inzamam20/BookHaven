@@ -3,7 +3,7 @@ const morgan = require('morgan');
 const userRoutes = require('./Routes/userRoutes.routes');
 
 // eslint-disable-next-line no-unused-vars
-const { logger, printSomething } = require('./middlewares/app.middlewares');
+// const { logger, printSomething } = require('./middlewares/app.middlewares');
 
 const app = express();
 // const server = require('./http-module');

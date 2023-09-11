@@ -29,7 +29,7 @@ const getHomePage = (req, res) => {
 };
 
 const getDashboard = (req, res) => {
-    res.send('User Dashboard');
+    res.sendFile('GeneralDashboard.html', { root: './views' });
 };
 
 module.exports = {
