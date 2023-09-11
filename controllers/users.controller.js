@@ -90,15 +90,15 @@ const postRegister = (req, res) => {
                                         [name, Email, hash],
                                         (err, results) => {
                                             console.log(results);
-                                            console.log(err);
-                                        }
+                                            // console.log(err);
+                                        },
                                     );
                                 }
                             });
                         }
                     });
                 }
-            },
+            }
         );
         // res.redirect('login');
     }
