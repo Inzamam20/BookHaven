@@ -1,8 +1,7 @@
 /* eslint-disable comma-dangle */
 // const { route, router } = require('../app');
 
-const { use } = require('../app');
-
+/*
 const getRegister = (req, res) => {
     res.sendFile('signup.html', { root: './views/users' });
 };
@@ -24,6 +23,13 @@ const getLogin = (req, res) => {
     // res.sendFile('styles.css', { root: './views/users' });
 };
 
+const postLogin = (req, res) => {
+    const { Email, password } = req.body;
+
+    console.log(Email);
+    console.log(password);
+};
+
 const getHomePage = (req, res) => {
     res.sendFile('register.html', { root: './views/users' });
 };
@@ -36,6 +42,9 @@ module.exports = {
     getRegister,
     postRegister,
     getLogin,
+    postLogin,
     getDashboard,
     getHomePage,
 };
+
+*/

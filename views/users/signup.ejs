@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/all.min.css" />
+    <link rel="stylesheet" href="/css/signup.css" />
+
+    <!-- <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,700"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Sofia"
+      rel="stylesheet"
+      type="text/css"
+    /> -->
+
+    <title>Signup</title>
+  </head>
+  <body>
+    <!-- <h2 class="register-font">Register</h2> -->
+    <!-- <div class="login-form"> -->
+    <div>
+      <!-- <div class="text">Signup</div> -->
+      <div class="register-font">SIGNUP</div>
+      <form action="/users/register" method="post">
+        <div class="field">
+          <!-- <div class="fas fa-user-circle"></div> -->
+          <div class="fas fa-user"></div>
+          <input type="text" placeholder="Name" name="name" />
+        </div>
+        <div class="field">
+          <div class="fas fa-envelope"></div>
+          <input type="text" placeholder="Email" name="Email" />
+        </div>
+        <div class="field">
+          <div class="fas fa-lock"></div>
+          <input
+            type="password"
+            placeholder="Create Password"
+            name="password"
+          />
+        </div>
+        <div class="field">
+          <div class="fas fa-lock"></div>
+          <input type="text" placeholder="Confirm Password" />
+        </div>
+        <button>CREATE ACCOUNT</button>
+        <div class="link">
+          Already a member?
+          <a href="/users/login">Signin now</a>
+          <!-- <a href="#">Signup now</a> -->
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

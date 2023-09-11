@@ -1,39 +1,53 @@
+/* eslint-disable comma-dangle */
+require('dotenv').config();
 const express = require('express');
+
+const app = express();
+
 const morgan = require('morgan');
+const session = require('express-session');
+const flash = require('connect-flash');
+// const mySQL = require('mysql2');
+
+// Static Resources
+app.use(express.static('public'));
+
+// View Engine
+app.set('view engine', 'ejs');
+
+// Routes
 const userRoutes = require('./Routes/userRoutes.routes');
+const indexRoutes = require('./Routes/indexRoutes.routes');
+
+app.use(indexRoutes);
+app.use('/users', userRoutes);
 
 // eslint-disable-next-line no-unused-vars
 const { logger, printSomething } = require('./middlewares/app.middlewares');
+// Connect to PlanetScale Database
+// const connection = mySQL.createConnection(process.env.DATABASE_URL);
 
-const app = express();
-// const server = require('./http-module');
-// server.listen(3000);
-// server.server.listen(3000);
+// Session and Flash
+app.use(
+    session({
+        secret: 'secret',
+        resave: true,
+        saveUninitialized: true,
+    })
+);
 
-// app.use(logger, printSomething); // It was Application Level MiddleWare
-// Whenever server is getting any request for any file then the MiddleWare will be called
+app.use(flash());
 
 app.use(morgan('tiny'));
-app.use(express.static('public'));
-app.use(userRoutes);
 
-// The following code is Raw Node JS where we have to send the respond end message
-/*
-app.get('/', logger, (req, res) => {
-    // res.statusCode(200);
-    res.status(200).send('<h2>Home Page</h2>');
-    res.end();
-});
-app.get('/contact', (req, res) => {
-    res.status(202).send('<h2>Contact Page</h2>');
-    res.end();
-});
+// app.get('/getMysqlStatus', (req, res) => {
+//     connection.ping((err) => {
+//         if (err) {
+//             res.status(500).send('MySQL Server is Down');
+//         }
 
-app.use((req, res) => {
-    res.status(401).send("Error 404! Page doesn't exist.");
-    // res.send();
-});
-
-*/
+//         res.send('<h1>MySQL Server is Active</h1>');
+//     });
+// });
 
 module.exports = app;

@@ -1,49 +1,34 @@
 /* eslint-disable comma-dangle */
 /* eslint-disable no-unused-vars */
 const express = require('express');
-const bodyParser = require('body-parser');
 
 const router = express.Router();
+
+const bodyParser = require('body-parser');
+
 // const isLoggedIn = require('../middlewares/users.middlewares');
 const middleWares = require('../middlewares/users.middlewares');
 const {
+    getLogin,
+    postLogin,
     getRegister,
     postRegister,
-    getLogin,
     getDashboard,
     getHomePage,
-} = require('../controllers/userController.controllers');
+} = require('../controllers/users.controller');
 
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
 router.get('/login', getLogin);
+// router.post('/login', postLogin);
+// router.post('/login', middleWares.isLoggedIn, postLogin);
 
-router.get('/dashboard', getDashboard);
+router.get('/signup', getRegister);
+// router.post('register', postRegister);
+// router.post('/signup', middleWares.alreadyMember, postRegister);
 
-router.get('/register', getRegister);
-
-router.get('/', getHomePage);
-
-router.post('/login', middleWares.isLoggedIn, (req, res) => {
-    res.redirect('/dashboard');
-});
-
-router.post('/login', (req, res) => {
-    const { Email, password } = req.body;
-    res.send(
-        // eslint-disable-next-line prettier/prettier
-        `<h3>user with Email -${Email} and Password - ${password} is requesting to access</h3>`,
-    );
-});
-
-router.post('/register', middleWares.alreadyMember, postRegister);
-
-router.post('/register', (req, res) => {
-    const { username, email, password } = req.body;
-    res.send(
-        `<h2>user with ${username}\n Email: ${email}\n Password: ${password}\n  is trying to create an account`
-    );
-});
+// router.get('/dashboard', getDashboard);
+// router.get('/', getHomePage);
 
 module.exports = router;

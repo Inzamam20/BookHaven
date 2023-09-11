@@ -1,0 +1,8 @@
+    <!-- EJS => Templating Language to generate HTML with Raw JavaScript -->
+    <!-- <% const name = "Inzamam" %> <==>    Normal/Raw JavaScript      -->
+    <!-- <%-  <==> To include HTML Tags -->
+    <!-- <%=  <==> To print any value   -->
+    <!-- To declare the templating Engine as ejs we use View Engine -->
+    <!-- Also we have pug engine                                         -->
+
+In ejs files href we have to start from the /

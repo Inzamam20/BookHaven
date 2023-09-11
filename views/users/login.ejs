@@ -3,14 +3,15 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8" />
-    <title>Glowing Inputs Login Form UI</title>
-    <link rel="stylesheet" href="css/style.css" />
-    <link rel="stylesheet" href="css/all.min.css" />
+    <title>Signin</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/all.min.css" />
   </head>
   <body>
     <div class="login-form">
-      <div class="text">LOGIN</div>
-      <form action="/login" method="post">
+      <!-- <div class="text">LOGIN</div> -->
+      <div class="signin-font">LOGIN</div>
+      <form action="/users/login" method="POST">
         <div class="field">
           <div class="fas fa-envelope"></div>
           <input type="text" placeholder="Email or Phone" name="Email" />
@@ -22,7 +23,7 @@
         <button>LOGIN</button>
         <div class="link">
           Not a member?
-          <a href="register">Signup now</a>
+          <a href="/users/register">Signup now</a>
           <!-- <a href="#">Signup now</a> -->
         </div>
       </form>

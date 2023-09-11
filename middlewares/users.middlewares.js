@@ -28,7 +28,8 @@ const alreadyMember = (req, res, next) => {
             );
             console.log(username);
         }
-    } else {
+    } else if (req.method == 'get' && req.url == '/login') {
+        res.sendFile('login', { root: './views/users' });
         next();
     }
 };
