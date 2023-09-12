@@ -1,0 +1,31 @@
+/* Rizwan er CSS Might cause conflict */
+
+.custom-button {
+    margin: 10px;
+    background-color: transparent;
+    border-color: rgb(111, 0, 255);
+    color: rgb(0, 0, 0);
+}
+
+.custom-button:hover {
+    background-color: rgb(111, 0, 255);
+    border-color: rgb(0, 0, 0);
+    color: rgb(0, 0, 0);
+}
+
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+}
+
+
+.logo {
+    display: inline-block;
+    transform: scale(.8);
+    height: auto;
+    width: 75px;
+}
+
+.myclass {
+    display: inline-block;
+}

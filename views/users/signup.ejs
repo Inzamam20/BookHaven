@@ -25,13 +25,24 @@
     <div class="login-form">
     <div>
       <!-- <div class="text">Signup</div> -->
+
       <div class="register-font">SIGNUP</div>
 
+      <% if (errors.length==1 && errors.at(0) == 'Account Created Successfully!') { %>
+        <div class="successful">
+          <% errors.forEach ( error => { %> <%= error%> <br/> <% }) %>
+        </div>
+        <% errors.pop() %>
+        <% } %>
+
       <% if (errors.length>0) { %>
-      <div class="alert alert-danger">
-        <% errors.forEach ( error => { %> <%= error%> <br/> <% }) %>
-      </div>
-      <% } %>
+        <div class="alert alert-danger">
+          <% errors.forEach ( error => { %> <%= error%> <br/> <% }) %>
+        </div>
+        <% } %>
+
+        
+      
 
       <form action="/users/signup" method="POST">
         <div class="field">

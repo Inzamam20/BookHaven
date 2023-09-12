@@ -27,20 +27,21 @@ const postRegister = (req, res) => {
 
     // Data Validation
     const errors = [];
-    if (!name || !Email || !password || !confirmPassword) {
-        errors.push('All fields are required!');
-    }
-    if (password.length < 8) {
-        errors.push('Password must be at least 8 characters!');
-    }
+
     if (password) {
         if (password != confirmPassword) {
             // eslint-disable-next-line eqeqeq
             errors.push('Passwords do not match!');
         }
     }
+    if (password.length < 8) {
+        errors.push('Password must be at least 8 characters!');
+    }
     if (!passChecker.containsSpecialChars(password)) {
         errors.push("Password doesn't contain any special characters");
+    }
+    if (!name || !Email || !password || !confirmPassword) {
+        errors.push('All fields are required!');
     }
     if (errors.length > 0) {
         req.flash('errors', errors); // Resdirecting Error to the ejs
@@ -54,19 +55,20 @@ const postRegister = (req, res) => {
 
             (error, results, fields) => {
                 if (error) {
-                    console.error(`An error occured: ${error.message}`);
+                    console.log(`An error occured: ${error.message}`);
                     console.log('An error occured in the database');
                     errors.push(error.message);
                     req.flash('errors', errors);
                     res.redirect('signup');
-                    results
-                        .status(500)
-                        .json({ status: 500, message: `An error occured: ${error.message}` });
+                    // results
+                    //     .status(500)
+                    //     .json({ status: 500, message: `An error occured: ${error.message}` });
                 } else if (results.length) {
-                    // console.log('User already exist with this Email!');
+                    console.log('User already exist with this Email!');
                     errors.push('User already exist with this Email');
                     req.flash('errors', errors);
                     res.redirect('signup');
+                    // res.status(200).json({ status: 200, message: 'User found successfully.' });
                 } else {
                     // lets create the new account
                     // first we generate a salt using bcrypt - salt is basically a random string
@@ -77,7 +79,7 @@ const postRegister = (req, res) => {
                             res.redirect('signup');
                         } else {
                             bcrypt.hash(password, salt, (errr, hash) => {
-                                if (err) {
+                                if (errr) {
                                     errors.push(errr.message);
                                     req.flash('errors', errors);
                                     res.redirect('signup');
@@ -89,8 +91,11 @@ const postRegister = (req, res) => {
                                         (er, result) => {
                                             // console.log(result);
                                             console.log('User Created Successfully');
-                                            // console.log(err);
-                                        },
+                                            errors.push('Account Created Successfully!');
+                                            req.flash('errors', errors);
+                                            res.redirect('signup');
+                                            // console.log(er);
+                                        }
                                     );
                                 }
                             });
@@ -99,7 +104,9 @@ const postRegister = (req, res) => {
                 }
             }
         );
-        // res.redirect('login');
+        // req.flash('errors', errors);
+        // res.redirect('signup');
+        // res.render('./users/signup.ejs', { errors: req.flash('errors') });
     }
 };
 
