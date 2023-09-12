@@ -21,3 +21,9 @@
   background-color: #d33b31;
   color: rgb(255, 255, 255);
 }
+
+.successful {
+  padding: 20px;
+  background-color: #46f855;
+  color: rgb(255, 255, 255);
+}
