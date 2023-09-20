@@ -8,7 +8,7 @@ const session = require('express-session');
 const flash = require('connect-flash');
 
 const morgan = require('morgan');
-
+const passport = require('passport');
 // Static Resources
 app.use(express.static('public'));
 
@@ -25,6 +25,8 @@ app.use(
 );
 
 app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Body parser
 // To parse Data from HTML files body we need to use body-parser
@@ -42,9 +44,14 @@ app.use('/users', userRoutes);
 const { logger, printSomething } = require('./middlewares/app.middlewares');
 
 app.use(morgan('tiny'));
+require('./util/passport')(passport);
 
 // Test the Database Connection
 const connection = require('./util/database');
+
+app.get('/getUser', (req, res) => {
+    res.send(req.user);
+});
 
 connection.connect((error) => {
     if (error) {

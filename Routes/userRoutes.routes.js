@@ -1,6 +1,7 @@
 /* eslint-disable comma-dangle */
 /* eslint-disable no-unused-vars */
 const express = require('express');
+const passport = require('passport');
 
 const router = express.Router();
 
@@ -22,6 +23,13 @@ const {
 
 router.get('/login', getLogin);
 router.post('/login', postLogin);
+// router.post(
+//     '/login/password',
+//     passport.authenticate('local', {
+//         successRedirect: '/',
+//         failureRedirect: '/users/login',
+//     })
+// );
 // router.post('/login', middleWares.isLoggedIn, postLogin);
 
 router.get('/signup', getRegister);

@@ -2,6 +2,7 @@
 // and set the urlencoded to false
 const bcrypt = require('bcrypt');
 const { response } = require('express');
+const passport = require('passport');
 const passChecker = require('../passwordStrengthChecker');
 const connection = require('../util/database');
 const { connect } = require('../Routes/indexRoutes.routes');
@@ -10,11 +11,35 @@ const getLogin = (req, res) => {
     res.render('./users/login.ejs');
 };
 
-const postLogin = (req, res) => {
+const postLogin = (req, res, next) => {
     const { Email, password } = req.body;
 
     console.log(Email);
     console.log(password);
+
+    passport.authenticate('local', (err, user, info) => {
+        if (err) {
+            throw err;
+        }
+        if (!user) {
+            console.log(user);
+            if (info.message === 'Password Incorrect!') {
+                res.send('Incorrect Password!');
+            } else {
+                res.send('No user Exist');
+            }
+        }
+        if (user) {
+            req.login(user, (error) => {
+                if (error) {
+                    throw error;
+                }
+                res.redirect('/');
+                // res.rend('User logged in!');
+                console.log(user);
+            });
+        }
+    })(req, res, next);
 };
 
 const getRegister = (req, res) => {
@@ -53,7 +78,7 @@ const postRegister = (req, res) => {
             'SELECT * FROM user_info WHERE email = ?',
             [Email],
 
-            (error, results, fields) => {
+            (error, results) => {
                 if (error) {
                     console.log(`An error occured: ${error.message}`);
                     console.log('An error occured in the database');
@@ -88,21 +113,24 @@ const postRegister = (req, res) => {
                                         'INSERT INTO user_info VALUES (?, ?, ?)',
 
                                         [name, Email, hash],
-                                        (er, result) => {
+                                        (er) => {
                                             // console.log(result);
+                                            if (er) {
+                                                console.log(er);
+                                            }
                                             console.log('User Created Successfully');
                                             errors.push('Account Created Successfully!');
                                             req.flash('errors', errors);
                                             res.redirect('signup');
                                             // console.log(er);
-                                        }
+                                        },
                                     );
                                 }
                             });
                         }
                     });
                 }
-            }
+            },
         );
         // req.flash('errors', errors);
         // res.redirect('signup');
