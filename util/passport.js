@@ -27,14 +27,14 @@ module.exports = (passport) => {
                 [Email],
                 // eslint-disable-next-line consistent-return
                 (err, results, fields) => {
-                    // console.log(results);
+                    console.log(results);
                     console.log(fields); // Fields contains extra meta data about results
                     if (err) {
                         throw err;
                     }
                     if (results.length === 0) {
                         console.log('Incorrect Email');
-                        return done(null, false, { message: 'This email is not registered' });
+                        return done(null, false, { message: 'This email is not registered to our database' });
                     }
 
                     const user = results[0];
@@ -48,7 +48,7 @@ module.exports = (passport) => {
                             if (isMatch) {
                                 return done(null, user);
                             }
-                            return done(null, false, { message: 'Password Incorrect!' });
+                            return done(null, false, { message: 'Incorrect Password!' });
                         });
                         // return done(null, results);
                 },

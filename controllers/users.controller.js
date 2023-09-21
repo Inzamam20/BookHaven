@@ -8,26 +8,34 @@ const connection = require('../util/database');
 const { connect } = require('../Routes/indexRoutes.routes');
 
 const getLogin = (req, res) => {
-    res.render('./users/login.ejs');
+    res.render('./users/login.ejs', { errors: req.flash('errors') });
 };
 
 const postLogin = (req, res, next) => {
-    const { Email, password } = req.body;
+    // const { Email, password } = req.body;
+    // console.log(Email);
+    // console.log(password);
 
-    console.log(Email);
-    console.log(password);
-
+    const errors = [];
     passport.authenticate('local', (err, user, info) => {
         if (err) {
             throw err;
         }
         if (!user) {
-            console.log(user);
-            if (info.message === 'Password Incorrect!') {
-                res.send('Incorrect Password!');
+            // console.log(user);
+            if (info.message === 'Incorrect Password!') {
+                errors.push(info.message);
+                // req.flash('errors', errors);
+                // res.redirect('login');
+                // res.send('Incorrect Password!');
             } else {
-                res.send('No user Exist');
+                errors.push('No user Exist with this Email ID');
+                // req.flash('errors', errors);
+                // res.redirect('login');
+                // res.send('No user Exist');
             }
+            req.flash('errors', errors);
+            res.redirect('login');
         }
         if (user) {
             req.login(user, (error) => {
@@ -36,7 +44,7 @@ const postLogin = (req, res, next) => {
                 }
                 res.redirect('/');
                 // res.rend('User logged in!');
-                console.log(user);
+                // console.log(user);
             });
         }
     })(req, res, next);
@@ -54,7 +62,7 @@ const postRegister = (req, res) => {
     const errors = [];
 
     if (password) {
-        if (password != confirmPassword) {
+        if (password !== confirmPassword) {
             // eslint-disable-next-line eqeqeq
             errors.push('Passwords do not match!');
         }
@@ -69,7 +77,7 @@ const postRegister = (req, res) => {
         errors.push('All fields are required!');
     }
     if (errors.length > 0) {
-        req.flash('errors', errors); // Resdirecting Error to the ejs
+        req.flash('errors', errors); // Redirecting Error to the ejs
         // console.log(errors);
         res.redirect('signup');
     } else {
@@ -89,7 +97,6 @@ const postRegister = (req, res) => {
                     //     .status(500)
                     //     .json({ status: 500, message: `An error occured: ${error.message}` });
                 } else if (results.length) {
-                    console.log('User already exist with this Email!');
                     errors.push('User already exist with this Email');
                     req.flash('errors', errors);
                     res.redirect('signup');
@@ -132,9 +139,6 @@ const postRegister = (req, res) => {
                 }
             },
         );
-        // req.flash('errors', errors);
-        // res.redirect('signup');
-        // res.render('./users/signup.ejs', { errors: req.flash('errors') });
     }
 };
 
