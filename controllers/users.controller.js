@@ -1,11 +1,12 @@
+/* eslint-disable comma-dangle */
 // To parse Data from HTML files body we need to use body-parser
 // and set the urlencoded to false
 const bcrypt = require('bcrypt');
-const { response } = require('express');
+// const { response } = require('express');
 const passport = require('passport');
 const passChecker = require('../passwordStrengthChecker');
 const connection = require('../util/database');
-const { connect } = require('../Routes/indexRoutes.routes');
+// const { connect } = require('../Routes/indexRoutes.routes');
 
 const getLogin = (req, res) => {
     res.render('./users/login.ejs', { errors: req.flash('errors') });
@@ -130,14 +131,14 @@ const postRegister = (req, res) => {
                                             req.flash('errors', errors);
                                             res.redirect('signup');
                                             // console.log(er);
-                                        },
+                                        }
                                     );
                                 }
                             });
                         }
                     });
                 }
-            },
+            }
         );
     }
 };
