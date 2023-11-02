@@ -4,13 +4,14 @@ const isLoggedIn = (req, res, next) => {
     const { Email, password } = req.body;
 
     if (req.url == '/login' && Email == 'admin' && password == 'admin') {
-        next();
+        res.redirect('/admin/dashboard');
     } else {
-        res.send(
-            // eslint-disable-next-line prettier/prettier
-            `<h3>user with Email -${Email} and Password - ${password} is requesting to access</h3>`,
-        );
-        console.log(Email);
+        next();
+        // res.send(
+        //     // eslint-disable-next-line prettier/prettier
+        //     `<h3>user with Email -${Email} and Password - ${password} is requesting to access</h3>`,
+        // );
+        // console.log(Email);
         // res.redirect('/login');
     }
 };

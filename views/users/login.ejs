@@ -1,16 +1,27 @@
 <!doctype html>
 <!-- Created By CodingNepal -->
-<html lang="en" dir="ltr">
+<html lang="en" dir="ltr" data-bs-theme="dark">
   <head>
     <meta charset="utf-8" />
     <title>Signin</title>
-    <link rel="stylesheet" href="/css/style.css" />
+
+    <!-- <script src="js/color-modes.js"></script> -->
+
     <link rel="stylesheet" href="/css/all.min.css" />
-    <link rel="stylesheet" href="/css/login.css" />
+    <link rel="stylesheet" href="/css/login-signup.css" />
+
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="/css/headers.css"> -->
+
   </head>
   <body>
+
+    
+    <!-- HTML CODES -->
+
     <div class="login-form">
-      <!-- <div class="text">LOGIN</div> -->
+
+
       <div class="signin-font">LOGIN</div>
 
       <% if (errors.length>0) { %>
@@ -33,7 +44,9 @@
         <div class="link">
           Not a member?
           <a href="/users/signup">Signup now</a>
-          <!-- <a href="#">Signup now</a> -->
+
+          <div class="link">Go to <a href="/">Homepage</a></div>
+
         </div>
       </form>
     </div>

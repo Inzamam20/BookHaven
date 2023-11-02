@@ -1,27 +1,21 @@
+/* eslint-disable object-curly-newline */
 /* eslint-disable comma-dangle */
 /* eslint-disable no-unused-vars */
 const express = require('express');
-const passport = require('passport');
 
 const router = express.Router();
+
+const upload = require('../util/multer');
 
 // const bodyParser = require('body-parser');
 
 // const isLoggedIn = require('../middlewares/users.middlewares');
-const middleWares = require('../middlewares/users.middlewares');
-const {
-    getLogin,
-    postLogin,
-    getRegister,
-    postRegister,
-    getDashboard,
-    getHomePage,
-} = require('../controllers/users.controller');
+
+const { getLogin, postLogin, getSignup, postSignup } = require('../controllers/users.controller');
 
 // router.use(bodyParser.urlencoded({ extended: false }));
 // router.use(bodyParser.json());
 
-router.get('/login', getLogin);
 router.post('/login', postLogin);
 // router.post(
 //     '/login/password',
@@ -32,11 +26,11 @@ router.post('/login', postLogin);
 // );
 // router.post('/login', middleWares.isLoggedIn, postLogin);
 
-router.get('/signup', getRegister);
-router.post('/signup', postRegister);
-// router.post('/signup', middleWares.alreadyMember, postRegister);
+router.get('/login', getLogin);
 
-// router.get('/dashboard', getDashboard);
-// router.get('/', getHomePage);
+router.get('/signup', getSignup);
+
+router.post('/signup', upload.single('profilePicture'), postSignup);
+// router.post('/signup', middleWares.alreadyMember, postRegister);
 
 module.exports = router;

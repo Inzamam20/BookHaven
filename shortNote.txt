@@ -5,7 +5,7 @@
     <!-- To declare the templating Engine as ejs we use View Engine -->
     <!-- Also we have pug engine                                         -->
 
-In ejs files href we have to start from the /
+In ejs files href we have to start from the / or the root
 
 
 res.redirect('login'); // in res.redirect dont need to specify the root

@@ -1,82 +1,178 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/css/style.css" />
-    <link rel="stylesheet" href="/css/all.min.css" />
-    <link rel="stylesheet" href="/css/signup.css" />
 
-    <!-- <link
-      href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,700"
-      rel="stylesheet"
-      type="text/css"
-    />
-    <link
-      href="https://fonts.googleapis.com/css?family=Sofia"
-      rel="stylesheet"
-      type="text/css"
-    /> -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.118.2">
+    <title>Perfume Parlour - Signup</title>
 
-    <title>Signup</title>
+<link href="/css/bootstrap.min.css" rel="stylesheet">
+
+    
+    <!-- Custom styles for this template -->
+    <link href="/css/new-sign-in.css" rel="stylesheet">
   </head>
-  <body>
-    <!-- <h2 class="register-font">Register</h2> -->
-    <div class="login-form">
-    <div>
-      <!-- <div class="text">Signup</div> -->
+  <body class="d-flex align-items-center py-4 bg-body-tertiary">
+    
+<!-- <main class="form-signin w-100 m-auto"> -->
+  <div class="container mt-3">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <form action="/users/signup" class="needs-validation" method="POST" enctype="multipart/form-data" novalidate>
+                    <div class="text-center">
+                        <h1 class="h2 mb-3 fw-normal">Create an Account</h1>
+                        
+                            
+                    <% if (errorAlert == 'true') { %>
+                        <div class="alert alert-info" id="alert-info" role="alert">
+                            <% errorsArray.forEach ( error => { %> <%= error %> <br />
+                              <% }) %>
+                        </div>
+                    <% } %>
+                    
+                    <% if (successAlert == 'true') { %>
+                        <!-- <div class="alert alert-success" id="alert-success" role="alert">
 
-      <div class="register-font">SIGNUP</div>
+                        </div> -->
 
-      <% if (errors.length==1 && errors.at(0) == 'Account Created Successfully!') { %>
-        <div class="successful">
-          <% errors.forEach ( error => { %> <%= error%> <br/> <% }) %>
-        </div>
-        <% errors.pop() %>
-        <% } %>
+                        <div class="modal fade show" id="success" data-bs-toggle="modal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="successModalLabel">Successful</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                Account created Succesfully!
+                              </div>
+                              <div class="modal-footer d-flex justify-content-between">
+                                <a href="/users/login" class="link-info">
+                                    <button type="button" class="btn btn-success" data-bs-dismiss="modal">Signin</button>
+                                </a>
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                    <% } %>
+  
 
-      <% if (errors.length>0) { %>
-        <div class="alert alert-danger">
-          <% errors.forEach ( error => { %> <%= error%> <br/> <% }) %>
-        </div>
-        <% } %>
+                    </div>
+          <div class="row g-3">
+            <div class="col-md-6">
+                  <div class="form-floating --bs-warning-border-subtle">
+                    <input type="text" class="form-control" name="firstName" placeholder="First Name" required>
+                    <label for="floatingInput">First Name</label>
+                    <!-- <div class="valid-feedback">
+                      Looks good!
+                    </div> -->
+                  </div>
+            </div>
+            <div class="col-md-6">
+                  <div class="form-floating">
+                    <input type="text" class="form-control" name="lastName" placeholder="Last Name" required>
+                    <label for="floatingInput">Last Name</label>
+                  </div>
+            </div>
+            <div class="col-md-12">
+                  <div class="form-floating">
+                    <input type="email" class="form-control" name="email" id="email" placeholder="Email Address" autocomplete="email" required>
+                    <label for="floatingInput">Email Address</label>
+                    <div class="valid-feedback" id="emailFeedback">
 
+                    </div>
+                  </div>
+            </div>
+            <div class="col-md-6">
+                  <div class="form-floating">
+                      <input type="password" class="form-control" name="password" id="password" placeholder="Password" required>
+                      <label for="floatingInput">Password</label>
+                      <div class="valid-feedback" id="passwordFeedback">
+                      </div>
+                  </div>
+            </div>
+
+            <div class="col-md-6">
+                  <div class="form-floating">
+                      <input type="password" class="form-control" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" required>
+                      <label for="floatingInput">Confirm Password</label>
+                      <div class="valid-feedback" id="confirmPasswordFeedback">
+
+                      </div>
+                  </div>
+            </div>
+
+            <div class="col-md-6">
+              <input type="date" class="form-control" name="dob" required>
+            </div>
+
+            <div class="col-md-6">
+              <input type="file" class="form-control" id="profilePicture" name="profilePicture" accept="image/*" required>
+            </div>
+
+            <div class="col-md-6">
+                  <div class="form-floating">
+                    <input type="tel" class="form-control" id="phoneNo" name="phoneNo" placeholder="Phone Number" required>
+                    <label for="floatingInput">Phone Number</label>
+                    <div class="valid-feedback" id="phoneNoFeedback">
+
+                    </div>
+                  </div>
+            </div>
+            <div class="col-md-6">
+
+              <div class="form-floating text-center">
+
+                <select class="form-select " id="division" name="selectedDivision">
+                  <!-- <option selected>Select Volume</option> -->
+                  <option value="1">Dhaka</option>
+                  <option value="2">Mymensingh</option>
+                  <option value="3">Khulna</option>
+                  <option value="4">Rajshahi</option>
+                  <option value="5">Rangpur</option>
+                  <option value="6">Barishal</option>
+                  <option value="7">Chattogram</option>
+                  <option value="8">Sylhet</option>
+                </select>
+                <label for="division">Select Division</label>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="form-check mt-3">
+            <!-- <input class="form-check-input" type="checkbox" id="agreeCheck" required> -->
+            <input class="form-check-input" type="checkbox" id="agreeCheck" >
+            <label class="form-check-label" for="agreeCheck">I agree to the terms and conditions</label>
+          </div>
+
+          <div class="col d-flex justify-content-center">
+            <button class="btn btn-primary w-50 mt-3" type="submit">Create Account</button>
+          </div>
+
+        </form>
         
-      
+        <a class="icon-link icon-link-hover mt-3 col d-flex justify-content-center" style="--bs-link-hover-color-rgb: 255, 195, 0;" href="/">
+          Go Back to Homepage
+        </a>
 
-      <form action="/users/signup" method="POST">
-        <div class="field">
-          <!-- <div class="fas fa-user-circle"></div> -->
-          <div class="fas fa-user"></div>
-          <input type="text" placeholder="Name" name="name" id="name" />
-        </div>
-        <div class="field">
-          <div class="fas fa-envelope"></div>
-          <input type="text" placeholder="Email" name="Email" />
-        </div>
-        <div class="field">
-          <div class="fas fa-lock"></div>
-          <input
-            type="password"
-            placeholder="Create Password"
-            name="password"
-          />
-        </div>
-        <div class="field">
-          <div class="fas fa-lock"></div>
-          <input
-            type="password"
-            placeholder="Confirm Password"
-            name="confirmPassword"
-          />
-        </div>
-        <button>CREATE ACCOUNT</button>
-        <div class="link">
-          Already a member?
-          <a href="/users/login">Signin now</a>
-          <!-- <a href="#">Signup now</a> -->
-        </div>
-      </form>
+      </div>
     </div>
-  </body>
+  </div>
+  
+
+<!-- </main> -->
+<script src="/js/bootstrap.bundle.min.js"></script>
+<script src="/js/form-validation.js"></script>
+
+<!-- <script src="/js/bootstrap.bundle.js"></script> -->
+<script>
+  const myModal = new bootstrap.Modal(document.getElementById('success'));
+  myModal.show();
+</script>
+
+    </body>
 </html>

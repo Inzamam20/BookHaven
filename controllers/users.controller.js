@@ -1,22 +1,31 @@
+/* eslint-disable no-shadow */
+/* eslint-disable operator-linebreak */
+/* eslint-disable object-curly-newline */
+/* eslint-disable no-trailing-spaces */
+/* eslint-disable no-unused-vars */
 /* eslint-disable comma-dangle */
 // To parse Data from HTML files body we need to use body-parser
 // and set the urlencoded to false
 const bcrypt = require('bcrypt');
-// const { response } = require('express');
 const passport = require('passport');
-const passChecker = require('../passwordStrengthChecker');
+
+const fs = require('fs');
+
+const passChecker = require('../util/passwordStrengthChecker');
 const connection = require('../util/database');
 // const { connect } = require('../Routes/indexRoutes.routes');
 
+// const getLogin = (req, res) => {
+//     res.render('./users/login.ejs', { errors: req.flash('errors') });
+// };
+
 const getLogin = (req, res) => {
-    res.render('./users/login.ejs', { errors: req.flash('errors') });
+    res.render('./users/new-login.ejs', {
+        errorsArray: req.flash('errors'),
+    });
 };
 
 const postLogin = (req, res, next) => {
-    // const { Email, password } = req.body;
-    // console.log(Email);
-    // console.log(password);
-
     const errors = [];
     passport.authenticate('local', (err, user, info) => {
         if (err) {
@@ -26,14 +35,8 @@ const postLogin = (req, res, next) => {
             // console.log(user);
             if (info.message === 'Incorrect Password!') {
                 errors.push(info.message);
-                // req.flash('errors', errors);
-                // res.redirect('login');
-                // res.send('Incorrect Password!');
             } else {
                 errors.push('No user Exist with this Email ID');
-                // req.flash('errors', errors);
-                // res.redirect('login');
-                // res.send('No user Exist');
             }
             req.flash('errors', errors);
             res.redirect('login');
@@ -51,86 +54,196 @@ const postLogin = (req, res, next) => {
     })(req, res, next);
 };
 
-const getRegister = (req, res) => {
-    res.render('./users/signup.ejs', { errors: req.flash('errors') });
+function flashError(req, res, Error) {
+    res.set('alertInfo', 'true');
+    res.cookie('alertInfo', 'true');
+
+    fs.unlinkSync(req.file.path);
+
+    req.flash('alertInfo', 'true');
+    req.flash('errors', Error);
+}
+
+const getSignup = (req, res) => {
+    let { alertInfo, successInfo } = req.cookies;
+    if (alertInfo === undefined) {
+        alertInfo = 'false';
+    }
+    if (successInfo === undefined) {
+        successInfo = 'false';
+    }
+
+    res.clearCookie('alertInfo');
+    res.clearCookie('successInfo');
+    res.header('alertInfo', alertInfo);
+    res.header('successInfo', successInfo);
+
+    // const errorAlert = req.flash('alertInfo');
+    // const errorsArray = req.flash('errors');
+
+    // console.log(errorsArray);
+
+    // res.render('./users/new-signup.ejs', {
+    //     errorAlert,
+    //     errorsArray,
+    // });
+
+    res.render('./users/signup.ejs', {
+        errorAlert: req.flash('alertInfo'),
+        successAlert: req.flash('success'),
+        errorsArray: req.flash('errors'),
+    });
 };
 
-const postRegister = (req, res) => {
-    // eslint-disable-next-line object-curly-newline
-    const { name, Email, password, confirmPassword } = req.body;
+const postSignup = (req, res) => {
+    const {
+        firstName,
+        lastName,
+        email,
+        password,
+        confirmPassword,
+        dob,
+        phoneNo,
+        selectedDivision,
+    } = req.body;
 
-    // Data Validation
+    // Read the uploaded Profile Picture
+    const profilePicture = fs.readFileSync(req.file.path);
+
+    // console.log(req.file.path);
+
+    let division;
+    if (selectedDivision === '1') {
+        division = 'Dhaka';
+    } else if (selectedDivision === '2') {
+        division = 'Mymensingh';
+    } else if (selectedDivision === '3') {
+        division = 'Khulna';
+    } else if (selectedDivision === '4') {
+        division = 'Rajshahi';
+    } else if (selectedDivision === '5') {
+        division = 'Rangpur';
+    } else if (selectedDivision === '6') {
+        division = 'Barishal';
+    } else if (selectedDivision === '7') {
+        division = 'Chattogram';
+    } else if (selectedDivision === '8') {
+        division = 'Sylhet';
+    }
+
     const errors = [];
 
+    if (!passChecker.isValidPassword(password)) {
+        errors.push(
+            'Password should be 8 characters or more with uppercase, lowercase, number, and special character.'
+        );
+        flashError(req, res, errors);
+        res.redirect('signup');
+    }
     if (password) {
         if (password !== confirmPassword) {
             // eslint-disable-next-line eqeqeq
             errors.push('Passwords do not match!');
         }
     }
-    if (password.length < 8) {
-        errors.push('Password must be at least 8 characters!');
-    }
-    if (!passChecker.containsSpecialChars(password)) {
-        errors.push("Password doesn't contain any special characters");
-    }
-    if (!name || !Email || !password || !confirmPassword) {
+    if (
+        !firstName ||
+        !lastName ||
+        !email ||
+        !password ||
+        !confirmPassword ||
+        !dob ||
+        !phoneNo ||
+        !selectedDivision
+    ) {
         errors.push('All fields are required!');
     }
+
     if (errors.length > 0) {
-        req.flash('errors', errors); // Redirecting Error to the ejs
-        // console.log(errors);
+        console.log(`${password} -  ${confirmPassword}`);
+        console.log(errors);
+        flashError(req, res, errors);
+
         res.redirect('signup');
     } else {
         // Create New User
         connection.execute(
             'SELECT * FROM user_info WHERE email = ?',
-            [Email],
 
-            (error, results) => {
+            [email],
+
+            (error, result) => {
                 if (error) {
                     console.log(`An error occured: ${error.message}`);
                     console.log('An error occured in the database');
                     errors.push(error.message);
-                    req.flash('errors', errors);
+                    flashError(req, res, errors);
                     res.redirect('signup');
-                    // results
-                    //     .status(500)
-                    //     .json({ status: 500, message: `An error occured: ${error.message}` });
-                } else if (results.length) {
+                } else if (result.length) {
+                    const alertInfo = 'true';
+
+                    console.log('User already exist with this Email');
                     errors.push('User already exist with this Email');
+
+                    res.set('alertInfo', alertInfo);
+                    res.cookie('alertInfo', alertInfo);
+
+                    fs.unlinkSync(req.file.path);
+                    req.flash('alertInfo', alertInfo);
                     req.flash('errors', errors);
+
                     res.redirect('signup');
-                    // res.status(200).json({ status: 200, message: 'User found successfully.' });
                 } else {
-                    // lets create the new account
-                    // first we generate a salt using bcrypt - salt is basically a random string
+                    // Time to create the new Account
+                    // Before creating an account we generate a salt using bcrypt
+                    // Salt is basically a random string
                     bcrypt.genSalt(10, (err, salt) => {
                         if (err) {
                             errors.push(err.message);
-                            req.flash('errors', errors);
+                            flashError(req, res, errors);
+
                             res.redirect('signup');
                         } else {
                             bcrypt.hash(password, salt, (errr, hash) => {
                                 if (errr) {
                                     errors.push(errr.message);
-                                    req.flash('errors', errors);
+                                    flashError(req, res, errors);
+
                                     res.redirect('signup');
                                 } else {
                                     connection.query(
-                                        'INSERT INTO user_info VALUES (?, ?, ?)',
+                                        'INSERT INTO user_info VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
 
-                                        [name, Email, hash],
+                                        [
+                                            firstName,
+                                            lastName,
+                                            email,
+                                            hash,
+                                            dob,
+                                            phoneNo,
+                                            division,
+                                            profilePicture,
+                                        ],
                                         (er) => {
-                                            // console.log(result);
+                                            console.log(result);
                                             if (er) {
-                                                console.log(er);
+                                                console.log(`An error occured: ${er.message}`);
+                                                flashError(req, res, errors);
+                                                res.redirect('signup');
                                             }
+                                            const successInfo = 'true';
+                                            res.set('successInfo', successInfo);
+                                            res.cookie('successInfo', successInfo);
+
+                                            fs.unlinkSync(req.file.path);
+
                                             console.log('User Created Successfully');
-                                            errors.push('Account Created Successfully!');
+                                            errors.push('Account created Succesfully!');
+
                                             req.flash('errors', errors);
+                                            req.flash('success', successInfo);
+
                                             res.redirect('signup');
-                                            // console.log(er);
                                         }
                                     );
                                 }
@@ -146,6 +259,6 @@ const postRegister = (req, res) => {
 module.exports = {
     getLogin,
     postLogin,
-    getRegister,
-    postRegister,
+    getSignup,
+    postSignup,
 };
