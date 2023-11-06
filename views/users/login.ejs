@@ -1,54 +1,65 @@
 <!doctype html>
-<!-- Created By CodingNepal -->
-<html lang="en" dir="ltr" data-bs-theme="dark">
+<html lang="en" data-bs-theme="dark">
   <head>
-    <meta charset="utf-8" />
-    <title>Signin</title>
 
-    <!-- <script src="js/color-modes.js"></script> -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.118.2">
+    <title>Perfume Parlour</title>
 
-    <link rel="stylesheet" href="/css/all.min.css" />
-    <link rel="stylesheet" href="/css/login-signup.css" />
-
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <!-- <link rel="stylesheet" href="/css/headers.css"> -->
-
-  </head>
-  <body>
+<link href="/css/bootstrap.min.css" rel="stylesheet">
 
     
-    <!-- HTML CODES -->
+    <!-- Custom styles for this template -->
+    <link href="/css/new-sign-in.css" rel="stylesheet">
+  </head>
+  <body class="d-flex align-items-center py-4 bg-body-tertiary">
+    
+<main class="form-signin w-100 m-auto">
+  <form action="/users/login" method="POST">
 
-    <div class="login-form">
-
-
-      <div class="signin-font">LOGIN</div>
-
-      <% if (errors.length>0) { %>
-      <div class="alert alert-danger">
-        <% errors.forEach ( error => { %> <%= error%> <br />
-        <% }) %>
-      </div>
-      <% } %>
-
-      <form action="/users/login" method="POST">
-        <div class="field">
-          <div class="fas fa-envelope"></div>
-          <input type="text" placeholder="Email or Phone" name="Email" />
+    <div class="text-center">
+      <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+      
+      <% if (errorAlert == 'true') { %>
+        <div class="alert alert-warning" id="alert-info" role="alert">
+            <% errorsArray.forEach ( error => { %> <%= error %> <br />
+              <% }) %>
         </div>
-        <div class="field">
-          <div class="fas fa-lock"></div>
-          <input type="password" placeholder="Password" name="password" />
-        </div>
-        <button>Signin</button>
-        <div class="link">
-          Not a member?
-          <a href="/users/signup">Signup now</a>
-
-          <div class="link">Go to <a href="/">Homepage</a></div>
-
-        </div>
-      </form>
+    <% } %>
     </div>
-  </body>
+
+    <div class="form-floating">
+      <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
+      <label for="floatingInput">Email address</label>
+    </div>
+    <div class="form-floating">
+      <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+      <label for="floatingPassword">Password</label>
+    </div>
+
+    <!-- Checkbox and Forgot Password Link Container -->
+    <div class="d-flex justify-content-between align-items-center my-3">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" value="remember-me" id="flexCheckDefault">
+      <label class="form-check-label" for="flexCheckDefault">Remember me</label>
+      </div>
+      <!-- Forgot Password Button Beside Remember me Checkbox -->
+      <a href="/users/forgot-password" class="btn btn-link">Forgot Password?</a>
+    </div>
+      <!-- <a href="/users/signup" class="btn btn-link ms-0 my-3">Dont have an account?</a> -->
+    <button class="btn btn-primary w-100 py-2" type="submit">Sign in</button>
+
+    <div class="text-center mt-3">
+      <a href="/users/signup" class="btn btn-secondary">Don't have an Account?</a>
+    </div>
+    <!-- <p class="mt-5 mb-3 text-body-secondary">&copy; 2017–2023</p> -->
+  </form>
+
+</main>
+<script src="/js/bootstrap.bundle.min.js"></script>
+
+    </body>
 </html>

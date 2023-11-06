@@ -22,7 +22,7 @@ app.use('/assets', express.static(path.join(__dirname, 'node_modules', 'bootstra
 app.use(
     session({
         secret: 'SecretStringForSession',
-        cookie: { maxAge: 60000 },
+        cookie: { maxAge: 24 * 60 * 60 * 1000 }, // 24 Hours
         resave: true,
         saveUninitialized: true,
     })

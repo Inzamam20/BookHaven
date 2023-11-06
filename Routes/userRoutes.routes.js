@@ -16,7 +16,7 @@ const { getLogin, postLogin, getSignup, postSignup } = require('../controllers/u
 // router.use(bodyParser.urlencoded({ extended: false }));
 // router.use(bodyParser.json());
 
-router.post('/login', postLogin);
+// router.post('/login', postLogin);
 // router.post(
 //     '/login/password',
 //     passport.authenticate('local', {
@@ -29,6 +29,8 @@ router.post('/login', postLogin);
 router.get('/login', getLogin);
 
 router.get('/signup', getSignup);
+
+router.post('/login', postLogin);
 
 router.post('/signup', upload.single('profilePicture'), postSignup);
 // router.post('/signup', middleWares.alreadyMember, postRegister);

@@ -13,22 +13,22 @@ module.exports = (passport) => {
     passport.use(
         new LocalStrategy(
             {
-                usernameField: 'Email',
+                usernameField: 'email',
                 passwordField: 'password',
             },
-            (Email, password, done) => {
-            // console.log(Email);
+            (email, password, done) => {
+            // console.log(email);
             // console.log(password);
 
             const query = 'SELECT * FROM user_info WHERE email = ?';
             // Match User
             connection.execute(
                 query,
-                [Email],
+                [email],
                 // eslint-disable-next-line consistent-return
                 (err, results, fields) => {
-                    console.log(results);
-                    console.log(fields); // Fields contains extra meta data about results
+                    // console.log(results);
+                    // console.log(fields); // Fields contains extra meta data about results
                     if (err) {
                         throw err;
                     }
@@ -50,7 +50,6 @@ module.exports = (passport) => {
                             }
                             return done(null, false, { message: 'Incorrect Password!' });
                         });
-                        // return done(null, results);
                 },
             );
 },
@@ -58,10 +57,10 @@ module.exports = (passport) => {
     );
     passport.serializeUser((user, done) => {
         process.nextTick(() => {
-          done(null, { Email: user.Email });
+          done(null, { email: user.email });
         });
       });
-      passport.deserializeUser((Email, done) => {
+    passport.deserializeUser((Email, done) => {
         const query = 'SELECT * FROM user_info WHERE email = ?';
         connection.execute(query, [Email], (err, result) => {
             if (err) { throw err; }

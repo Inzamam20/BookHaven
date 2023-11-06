@@ -11,8 +11,10 @@ const passport = require('passport');
 
 const fs = require('fs');
 
+const { error } = require('console');
 const passChecker = require('../util/passwordStrengthChecker');
 const connection = require('../util/database');
+const currentUser = require('../util/currentUser/user');
 // const { connect } = require('../Routes/indexRoutes.routes');
 
 // const getLogin = (req, res) => {
@@ -20,8 +22,18 @@ const connection = require('../util/database');
 // };
 
 const getLogin = (req, res) => {
-    res.render('./users/new-login.ejs', {
+    let { alertInfo } = req.cookies;
+
+    if (alertInfo === undefined) {
+        alertInfo = 'false';
+    }
+
+    res.header('alertInfo', alertInfo);
+    res.clearCookie('alertInfo');
+
+    res.render('./users/login.ejs', {
         errorsArray: req.flash('errors'),
+        errorAlert: req.flash('alertInfo'),
     });
 };
 
@@ -32,23 +44,30 @@ const postLogin = (req, res, next) => {
             throw err;
         }
         if (!user) {
-            // console.log(user);
             if (info.message === 'Incorrect Password!') {
                 errors.push(info.message);
             } else {
-                errors.push('No user Exist with this Email ID');
+                errors.push('No user exist with this Email ID');
             }
+
+            req.flash('alertInfo', 'true');
             req.flash('errors', errors);
+            res.header('errorAlert', 'true');
+            res.cookie('alertInfo', 'true');
+
             res.redirect('login');
         }
+
         if (user) {
             req.login(user, (error) => {
                 if (error) {
                     throw error;
                 }
+                currentUser.email = user.email;
+                currentUser.name = user.lastName;
+                currentUser.profilePicture = user.IMAGE.toString('base64');
+
                 res.redirect('/');
-                // res.rend('User logged in!');
-                // console.log(user);
             });
         }
     })(req, res, next);
@@ -137,8 +156,8 @@ const postSignup = (req, res) => {
         errors.push(
             'Password should be 8 characters or more with uppercase, lowercase, number, and special character.'
         );
-        flashError(req, res, errors);
-        res.redirect('signup');
+        // flashError(req, res, errors);
+        // res.redirect('signup');
     }
     if (password) {
         if (password !== confirmPassword) {
@@ -258,7 +277,7 @@ const postSignup = (req, res) => {
 
 module.exports = {
     getLogin,
-    postLogin,
     getSignup,
+    postLogin,
     postSignup,
 };
