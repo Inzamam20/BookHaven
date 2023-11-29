@@ -8,16 +8,16 @@ const getDashboard = (req, res) => {
     res.render('./admin/dashboard.ejs');
 };
 
-const getani = (req, res) => {
-    console.log(req.body);
-    // httpMsg.sendJSON(req, res, {
-    //     msg: 'Hello',
-    // });
-    res.send({
-        msg: 'okasd',
-    });
-    // res.render('./admin/dashboard.ejs');
-};
+// const getani = (req, res) => {
+//     console.log(req.body);
+//     // httpMsg.sendJSON(req, res, {
+//     //     msg: 'Hello',
+//     // });
+//     res.send({
+//         msg: 'okasd',
+//     });
+//     // res.render('./admin/dashboard.ejs');
+// };
 
 const getAddPerfume = (req, res) => {
     const perfumeName = req.flash('name');
@@ -103,5 +103,5 @@ module.exports = {
     getDashboard,
     getAddPerfume,
     postAddPerfume,
-    getani,
+    // getani,
 };
