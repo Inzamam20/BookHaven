@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><%= productInfo[0].Name %> Details</title>
+    <link rel="icon" href="/icons/title-icon.png" type="image/png">
+
+    <!-- Bootstrap CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #212529; /* Dark background color */
+            color: #fff; /* Light text color */
+        }
+
+        .product-info {
+            margin-top: 50px;
+        }
+
+        .product-info img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .product-info h2 {
+            margin-top: 20px;
+            font-size: 2.5em;
+        }
+
+        .product-info p {
+            font-size: 1.2em;
+        }
+
+        .product-info .btn {
+            margin-top: 20px;
+        }
+
+        .volume-radio {
+            display: inline-block;
+        }
+
+        .radio-label {
+            display: inline-block;
+            margin-right: 15px; /* Adjust the margin as needed */
+        }
+    </style>
+</head>
+
+<body>
+
+    <main>
+        <div class="content">
+            <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+                <a href="/" class="d-flex align-items-center ms-3 mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+                    <svg class="bi me-1" width="40" height="32"><use xlink:href="#bootstrap" /></svg>
+                    <span class="fs-3">Perfume Parlor</span>
+                </a>
+
+                <div class="mx-auto">
+                    <ul class="nav nav-pills">
+                        <li class="nav-item"><a href="/" class="nav-link active" aria-current="page">Home</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link">Features</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link">Pricing</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link">FAQs</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link">About</a></li>
+                    </ul>
+                </div>
+
+                <!-- Search Box -->
+                <form class="col-12 col-lg-auto ms-3 mb-lg-0 me-3" role="search">
+                    <input type="search" class="form-control form-control-dark text-bg-dark" placeholder="Search..." aria-label="Search">
+                </form>
+
+                <% if (currentUser.email === null) { %>
+                <!-- Log in and Sign Up Button -->
+                <div class="text-end">
+                    <a href="/users/login"> <button type="button" class="btn btn-outline-light me-2">Login</button></a>
+                    <a href="/users/signup"> <button type="button" class="btn btn-warning me-3">Sign-up</button></a>
+                </div>
+                <% } else { %>
+                <!-- Profile Picture -->
+                <div class="dropdown text-end me-3">
+                    <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="data:image;base64, <%= currentUser.profilePicture %>" alt="img" width="40"
+                            height="40" class="rounded-circle">
+                    </a>
+                    <ul class="dropdown-menu text-small">
+                        <!-- <li><a class="dropdown-item" href="#">New project...</a></li> -->
+                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="/users/signout" method="POST">Sign out</a></li>
+                    </ul>
+                </div>
+                <% } %>
+
+            </header>
+        </div>
+
+        <div class="container product-info">
+            <div class="row">
+                <div class="col-md-6">
+                    <img src="data:image;base64, <%= productInfo[0].Thumbnail %>" class="img-fluid rounded"
+                        alt="<%= productInfo[0].Name %>">
+                </div>
+                <div class="col-md-6">
+                    <h2 class="mt-3"><%= productInfo[0].Name %></h2>
+                    <p class="lead"><%= productInfo[0].Description %></p>
+                    <p class="fw-bold">Brand: <%= productInfo[0].Brand %></p>
+                    <p class="fw-bold">Volume:   
+                        <span class="volume-radio">
+                            <label class="radio-label">
+                                <input type="radio" name="volume" value="3" checked> 3ml
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="volume" value="5"> 5ml
+                            </label>
+                        </span>
+                    </p>
+                    
+
+                    <p class="fw-bold">Price: &#2547;<%= productInfo[0].Price %></p>
+                    <p class="fw-regular">Quantities Left: <%= productInfo[0].Quantity %></p>
+                    <button type="button" class="btn btn-primary">Add to Cart</button>
+                    <button type="button" class="btn btn-success">Buy Now</button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Bootstrap JS and Popper.js (for dropdowns, modals, etc.) -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

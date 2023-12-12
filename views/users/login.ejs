@@ -7,7 +7,9 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.118.2">
-    <title>Perfume Parlour</title>
+    <title>Perfume Parlour - Signin</title>
+    <link rel="icon" href="/icons/title-icon.png" type="image/png">
+
 
 <link href="/css/bootstrap.min.css" rel="stylesheet">
 
@@ -15,20 +17,31 @@
     <!-- Custom styles for this template -->
     <link href="/css/new-sign-in.css" rel="stylesheet">
   </head>
-  <body class="d-flex align-items-center py-4 bg-body-tertiary">
-    
-<main class="form-signin w-100 m-auto">
+  <body class="bg-body-tertiary d-flex align-items-center min-vh-100">    
+<!-- <main class="form-signin w-100 m-auto"> -->
+
+  <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom fixed-top bg-dark">
+    <a href="/" class="d-flex align-items-center ms-3 mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+        <svg class="bi me-1" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
+        <span class="fs-3 text-light">Perfume Parlor</span>
+    </a>
+    <div class="mx-auto">
+        <ul class="nav nav-pills">
+            <li class="nav-item"><a href="/" class="nav-link active" aria-current="page">Home</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">Features</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">Pricing</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">FAQs</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">About</a></li>
+        </ul>
+    </div>
+</header>
+
+      <main class="form-signin w-100 m-auto">
   <form action="/users/login" method="POST">
 
     <div class="text-center">
       <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
-      
-      <% if (errorAlert == 'true') { %>
-        <div class="alert alert-warning" id="alert-info" role="alert">
-            <% errorsArray.forEach ( error => { %> <%= error %> <br />
-              <% }) %>
-        </div>
-    <% } %>
+    
     </div>
 
     <div class="form-floating">

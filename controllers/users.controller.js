@@ -59,13 +59,14 @@ const postLogin = (req, res, next) => {
         }
 
         if (user) {
+            console.log(user);
             req.login(user, (error) => {
                 if (error) {
                     throw error;
                 }
                 currentUser.email = user.email;
                 currentUser.name = user.lastName;
-                currentUser.profilePicture = user.IMAGE.toString('base64');
+                currentUser.profilePicture = user.image.toString('base64');
 
                 res.redirect('/');
             });
@@ -131,6 +132,8 @@ const postSignup = (req, res) => {
 
     // console.log(req.file.path);
 
+    console.log(dob);
+
     let division;
     if (selectedDivision === '1') {
         division = 'Dhaka';
@@ -187,7 +190,7 @@ const postSignup = (req, res) => {
     } else {
         // Create New User
         connection.execute(
-            'SELECT * FROM user_info WHERE email = ?',
+            'SELECT * FROM users WHERE email = ?',
 
             [email],
 
@@ -231,20 +234,20 @@ const postSignup = (req, res) => {
                                     res.redirect('signup');
                                 } else {
                                     connection.query(
-                                        'INSERT INTO user_info VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+                                        'INSERT INTO users (email, password, firstName, lastName, phoneNo, division, image, dob) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
 
                                         [
-                                            firstName,
-                                            lastName,
                                             email,
                                             hash,
-                                            dob,
+                                            firstName,
+                                            lastName,
                                             phoneNo,
                                             division,
                                             profilePicture,
+                                            dob,
                                         ],
                                         (er) => {
-                                            console.log(result);
+                                            // console.log(result);
                                             if (er) {
                                                 console.log(`An error occured: ${er.message}`);
                                                 flashError(req, res, errors);

@@ -20,7 +20,7 @@ module.exports = (passport) => {
             // console.log(email);
             // console.log(password);
 
-            const query = 'SELECT * FROM user_info WHERE email = ?';
+            const query = 'SELECT * FROM users WHERE email = ?';
             // Match User
             connection.execute(
                 query,
@@ -61,7 +61,7 @@ module.exports = (passport) => {
         });
       });
     passport.deserializeUser((Email, done) => {
-        const query = 'SELECT * FROM user_info WHERE email = ?';
+        const query = 'SELECT * FROM users WHERE email = ?';
         connection.execute(query, [Email], (err, result) => {
             if (err) { throw err; }
 

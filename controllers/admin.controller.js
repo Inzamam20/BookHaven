@@ -56,6 +56,9 @@ const postAddPerfume = (req, res) => {
         volume = 500;
     }
 
+    const ppml = parseFloat((price / volume).toFixed(2));
+    const quantitiesLeft = (volume * parseInt(quantity, 10));
+
     // Data Validation
     // if (description === '') {
     //     description = 'N/A';
@@ -66,15 +69,15 @@ const postAddPerfume = (req, res) => {
     // Add perfume to the Database
     connection.execute(
         // eslint-disable-next-line max-len
-        'INSERT INTO perfumes (Name, Brand, Price, Quantity, Thumbnail, Description, volume) VALUES (?, ?, ?, ?, ?, ?, ?)',
+        // INSERT INTO `perfumeparlor2.0`.`perfume` (`ID`, `Name`, `Brand`, `PPml`, `Quantity`, `Thumbnail`, `Description`) VALUES (NULL, 'asd', 'asd', '20', '2', ?, 'asd');
+        'INSERT INTO perfume (Name, Brand, PPml, Quantity, Thumbnail, Description) VALUES (?, ?, ?, ?, ?, ?)',
         [
             perfumeName,
             brand,
-            parseInt(price, 10),
-            parseInt(quantity, 10),
+            ppml,
+            quantitiesLeft,
             image,
             description,
-            volume,
         ],
         (er) => {
             if (er) {
