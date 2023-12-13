@@ -1,12 +1,8 @@
 /* eslint-disable prettier/prettier */
-// const express = require('express');
-// const passport = require('passport');
-
 const bcrypt = require('bcrypt');
 const LocalStrategy = require('passport-local').Strategy;
 const connection = require('./database');
 
-// const { isMatch } = require('lodash');
 // const passport = require('passport');
 
 module.exports = (passport) => {

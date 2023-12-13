@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 const mySQL = require('mysql2');
-require('dotenv').config();
+// require('dotenv').config();
 
 // Connect to PlanetScale Database
 // const connection = mySQL.createConnection(process.env.DATABASE_URL);

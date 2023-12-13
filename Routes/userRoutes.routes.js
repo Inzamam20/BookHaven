@@ -33,6 +33,7 @@ router.get('/signup', getSignup);
 router.post('/login', postLogin);
 
 router.post('/signup', upload.single('profilePicture'), postSignup);
+
 // router.post('/signup', middleWares.alreadyMember, postRegister);
 
 module.exports = router;

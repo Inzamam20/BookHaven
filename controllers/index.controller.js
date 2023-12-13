@@ -1,4 +1,5 @@
 /* eslint-disable no-param-reassign */
+
 const { getProducts, getParticularProduct } = require('../util/currentUser/product');
 const currentUser = require('../util/currentUser/user');
 const connection = require('../util/database');
@@ -26,11 +27,20 @@ async function fetchData() {
     }
 }
 
-// fetchData();
-
 const getIndex = async (req, res) => {
+    // await fetchData();
+    // try {
     await fetchData();
+
+    // if (!req.user) {
+    //     res.render('index', { currentUser, products });
+    //     console.log(req.user);
+    // } else {
     res.render('./index.ejs', { currentUser, products });
+    //     // }
+    // } catch (error) {
+    //     console.log(error);
+    // }
 };
 
 const getProduct = async (req, res) => {
@@ -57,7 +67,7 @@ const getProduct = async (req, res) => {
 const searchPerfumes = (request, response) => {
     const searchQuery = request.query.search_query;
 
-    const query = `SELECT name FROM perfumes WHERE name LIKE '%${searchQuery}%' LIMIT 5`;
+    const query = `SELECT name FROM perfume WHERE name LIKE '%${searchQuery}%' LIMIT 5`;
 
     connection.query(query, (error, data) => {
         response.json(data);

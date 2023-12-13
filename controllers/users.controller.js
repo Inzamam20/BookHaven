@@ -8,10 +8,11 @@
 // and set the urlencoded to false
 const bcrypt = require('bcrypt');
 const passport = require('passport');
+const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 
 const fs = require('fs');
 
-const { error } = require('console');
 const passChecker = require('../util/passwordStrengthChecker');
 const connection = require('../util/database');
 const currentUser = require('../util/currentUser/user');
@@ -20,7 +21,6 @@ const currentUser = require('../util/currentUser/user');
 // const getLogin = (req, res) => {
 //     res.render('./users/login.ejs', { errors: req.flash('errors') });
 // };
-
 const getLogin = (req, res) => {
     let { alertInfo } = req.cookies;
 
@@ -60,6 +60,15 @@ const postLogin = (req, res, next) => {
 
         if (user) {
             console.log(user);
+            const tokenData = {
+                user: user.email,
+                lName: user.lastname,
+            };
+            const token = jwt.sign(tokenData, process.env.JWT_PRIVATE_KEY, {
+                algorithm: 'RS256',
+                expiresIn: '1m',
+            });
+
             req.login(user, (error) => {
                 if (error) {
                     throw error;
@@ -68,6 +77,8 @@ const postLogin = (req, res, next) => {
                 currentUser.name = user.lastName;
                 currentUser.profilePicture = user.image.toString('base64');
 
+                res.header('Authorization', `Bearer ${token}`);
+                // res.cookie('accessToken', token, { httpOnly: true });
                 res.redirect('/');
             });
         }
