@@ -68,7 +68,7 @@
 
 
 
-      <% if (currentUser.email === null) { %>
+      <% if (currentUser === null) { %>
             <!-- Log in and Sign Up Button -->
             <div class="text-end">
               <a href="/users/login"> <button type="button" class="btn btn-outline-light me-2">Login</button></a>
@@ -78,7 +78,7 @@
               <!-- Profile Picture -->
               <div class="dropdown text-end me-3">
                 <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                  <img src="data:image;base64, <%= currentUser.profilePicture %>" alt="img" width="40" height="40" class="rounded-circle">
+                  <img src="data:image;base64, <%= currentUser.image %>" alt="img" width="40" height="40" class="rounded-circle">
                 </a>
                 <ul class="dropdown-menu text-small">
                   <!-- <li><a class="dropdown-item" href="#">New project...</a></li> -->

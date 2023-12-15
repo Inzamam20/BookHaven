@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 
 const { getProducts, getParticularProduct } = require('../util/currentUser/product');
-const currentUser = require('../util/currentUser/user');
+const { getUserData } = require('../util/currentUser/user');
 const connection = require('../util/database');
 
 // Function to truncate the description to a specified length
@@ -13,8 +13,9 @@ function truncateDescription(description, maxLength) {
 }
 
 let products;
+let currentUser;
 
-async function fetchData() {
+async function fetchProductData() {
     try {
         products = await getProducts();
 
@@ -27,20 +28,34 @@ async function fetchData() {
     }
 }
 
-const getIndex = async (req, res) => {
-    // await fetchData();
-    // try {
-    await fetchData();
+async function fetchUserData(email) {
+    try {
+        const loggedUser = await getUserData(email);
+        [currentUser] = loggedUser;
+        currentUser.image = currentUser.image.toString('base64');
+        // console.log('From fetching Function:', currentUser);
+    } catch (error) {
+        console.log(error);
+    }
+}
 
-    // if (!req.user) {
-    //     res.render('index', { currentUser, products });
-    //     console.log(req.user);
-    // } else {
-    res.render('./index.ejs', { currentUser, products });
-    //     // }
-    // } catch (error) {
-    //     console.log(error);
-    // }
+const getIndex = async (req, res) => {
+    try {
+        await fetchProductData();
+
+        if (!req.user) {
+            currentUser = null;
+            res.render('./index.ejs', { currentUser, products });
+            // console.log(req.user);
+        } else {
+            console.log(req.user.user);
+            await fetchUserData(req.user.user);
+            // console.log(loggedUser);
+            res.render('./index.ejs', { currentUser, products });
+        }
+    } catch (error) {
+        console.log(error);
+    }
 };
 
 const getProduct = async (req, res) => {

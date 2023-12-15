@@ -78,7 +78,7 @@ const postLogin = (req, res, next) => {
                 currentUser.profilePicture = user.image.toString('base64');
 
                 res.header('Authorization', `Bearer ${token}`);
-                // res.cookie('accessToken', token, { httpOnly: true });
+                res.cookie('accessToken', token);
                 res.redirect('/');
             });
         }

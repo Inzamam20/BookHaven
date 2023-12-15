@@ -39,7 +39,7 @@ app.use(express.urlencoded({ extended: false }));
 // app.use(express.json()); // use either one
 
 // Set Cookie Parse, Sessions & Flash
-app.use(cookieParser('SecretStringForCookies'));
+app.use(cookieParser());
 
 app.use(flash());
 
