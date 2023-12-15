@@ -57,7 +57,7 @@ const getProduct = async (req, res) => {
 const searchPerfumes = (request, response) => {
     const searchQuery = request.query.search_query;
 
-    const query = `SELECT name FROM perfumes WHERE name LIKE '%${searchQuery}%' LIMIT 5`;
+    const query = `SELECT name FROM perfume WHERE name LIKE '%${searchQuery}%' LIMIT 5`;
 
     connection.query(query, (error, data) => {
         response.json(data);
