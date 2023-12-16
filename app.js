@@ -1,6 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable comma-dangle */
-require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
@@ -9,6 +8,8 @@ const path = require('path');
 const multer = require('multer');
 const morgan = require('morgan');
 const passport = require('passport');
+
+require('dotenv').config();
 
 // Initializing Express App
 const app = express();
@@ -38,7 +39,7 @@ app.use(express.urlencoded({ extended: false }));
 // app.use(express.json()); // use either one
 
 // Set Cookie Parse, Sessions & Flash
-app.use(cookieParser('SecretStringForCookies'));
+app.use(cookieParser());
 
 app.use(flash());
 
@@ -81,7 +82,7 @@ connection.getConnection((err, conn) => {
         console.error('Error connecting to MySQL database:', err);
     } else {
         console.log('Connected to MySQL database!');
-        console.log('');
+        console.log();
         conn.release();
     }
 
@@ -108,6 +109,10 @@ app.use((req, res, next) => {
     res.status(404).render('invalidURL');
     // next('Requested URL was not found!');
 });
+
+// const authenticateToken = require('./middlewares/users.middlewares');
+
+// app.use(authenticateToken);
 
 // Overwriting Default Error Handling Middleware
 app.use((error, req, res, next) => {

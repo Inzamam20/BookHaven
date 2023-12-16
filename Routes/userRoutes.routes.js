@@ -11,7 +11,13 @@ const upload = require('../util/multer');
 
 // const isLoggedIn = require('../middlewares/users.middlewares');
 
-const { getLogin, postLogin, getSignup, postSignup } = require('../controllers/users.controller');
+const {
+    getLogin,
+    postLogin,
+    getSignup,
+    postSignup,
+    signOut,
+} = require('../controllers/users.controller');
 
 // router.use(bodyParser.urlencoded({ extended: false }));
 // router.use(bodyParser.json());
@@ -33,6 +39,9 @@ router.get('/signup', getSignup);
 router.post('/login', postLogin);
 
 router.post('/signup', upload.single('profilePicture'), postSignup);
+
+router.delete('/signout', signOut);
+
 // router.post('/signup', middleWares.alreadyMember, postRegister);
 
 module.exports = router;

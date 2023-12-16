@@ -8,18 +8,16 @@
 // and set the urlencoded to false
 const bcrypt = require('bcrypt');
 const passport = require('passport');
+const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 
 const fs = require('fs');
+const { URL } = require('url');
 
-const { error } = require('console');
+const path = require('path');
 const passChecker = require('../util/passwordStrengthChecker');
 const connection = require('../util/database');
 const currentUser = require('../util/currentUser/user');
-// const { connect } = require('../Routes/indexRoutes.routes');
-
-// const getLogin = (req, res) => {
-//     res.render('./users/login.ejs', { errors: req.flash('errors') });
-// };
 
 const getLogin = (req, res) => {
     let { alertInfo } = req.cookies;
@@ -60,6 +58,15 @@ const postLogin = (req, res, next) => {
 
         if (user) {
             console.log(user);
+            const tokenData = {
+                user: user.email,
+                lName: user.lastname,
+            };
+            const token = jwt.sign(tokenData, process.env.JWT_PRIVATE_KEY, {
+                algorithm: 'RS256',
+                expiresIn: '3m',
+            });
+
             req.login(user, (error) => {
                 if (error) {
                     throw error;
@@ -68,7 +75,23 @@ const postLogin = (req, res, next) => {
                 currentUser.name = user.lastName;
                 currentUser.profilePicture = user.image.toString('base64');
 
-                res.redirect('/');
+                res.header('Authorization', `Bearer ${token}`);
+                res.cookie('accessToken', token);
+
+                // Check if the request URL starts with "/products"
+                if (req.body.origin !== undefined) {
+                    const decodedOrigin = decodeURIComponent(req.body.origin);
+                    const { pathname } = new URL(decodedOrigin);
+                    // console.log(pathname);
+                    if (pathname.startsWith('/products')) {
+                        console.log(pathname);
+                        // Redirect back to the original URL
+                        res.redirect(pathname);
+                    }
+                } else {
+                    // Redirecting to Home Page
+                    res.redirect('/');
+                }
             });
         }
     })(req, res, next);
@@ -278,9 +301,15 @@ const postSignup = (req, res) => {
     }
 };
 
+const signOut = (req, res) => {
+    res.clearCookie('accessToken');
+    // Send a response indicating successful sign-out
+    res.sendStatus(200);
+};
 module.exports = {
     getLogin,
     getSignup,
     postLogin,
     postSignup,
+    signOut,
 };

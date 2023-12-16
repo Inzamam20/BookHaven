@@ -1,5 +1,6 @@
-/* eslint-disable comma-dangle */
+/* eslint-disable consistent-return */
 /* eslint-disable eqeqeq */
+
 const isLoggedIn = (req, res, next) => {
     const { Email, password } = req.body;
 
@@ -7,12 +8,33 @@ const isLoggedIn = (req, res, next) => {
         res.redirect('/admin/dashboard');
     } else {
         next();
-        // res.send(
-        //     // eslint-disable-next-line prettier/prettier
-        //     `<h3>user with Email -${Email} and Password - ${password} is requesting to access</h3>`,
-        // );
-        // console.log(Email);
-        // res.redirect('/login');
+    }
+};
+
+// const authenticateToken = (req, res, next) => {
+//     const { accessToken } = req.cookies;
+
+//     if (!accessToken) {
+//         return res.status(401).json({ error: 'Unauthorized' });
+//     }
+
+//     jwt.verify(accessToken, process.env.JWT_PUBLIC_KEY, { algorithms: ['RS256'] }, (err, user) => {
+//         if (err) {
+//             return res.status(403).json({ error: 'Forbidden, Verification Failed!' });
+//         }
+
+//         req.user = user;
+//         next();
+//     });
+// };
+
+const getUserData = async (req, res, next) => {
+    try {
+        const userData = await getUserByEmail(req.user.email);
+        req.userData = userData;
+        next();
+    } catch (err) {
+        next(err);
     }
 };
 
@@ -35,4 +57,4 @@ const alreadyMember = (req, res, next) => {
     }
 };
 
-module.exports = { isLoggedIn, alreadyMember };
+module.exports = { isLoggedIn, alreadyMember, authenticateToken };
