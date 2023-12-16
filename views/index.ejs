@@ -49,7 +49,7 @@
 
       <div class="mx-auto">
       <ul class="nav nav-pills">
-        <li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Home</a></li>
+        <li class="nav-item"><a href="/" class="nav-link active" aria-current="page">Home</a></li>
         <li class="nav-item"><a href="#" class="nav-link">Features</a></li>
         <li class="nav-item"><a href="#" class="nav-link">Pricing</a></li>
         <li class="nav-item"><a href="#" class="nav-link">FAQs</a></li>
@@ -85,7 +85,7 @@
                   <li><a class="dropdown-item" href="#">Settings</a></li>
                   <li><a class="dropdown-item" href="#">Profile</a></li>
                   <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="/users/signout" method="POST">Sign out</a></li>
+                  <li><button type="button" class="dropdown-item" id="signOutButton">Sign out</button></li>
                 </ul>
               </div>
           <% } %>
@@ -142,11 +142,11 @@
             <!-- Radio buttons -->
             <div class="d-flex align-items-center">
               <div class="form-check form-check-inline">
-                <input class="form-check-input volume-radio" type="radio" name="volume<%= index %>" id="volume3ml<%= index %>" value="3ml" checked data-price="200">
+                <input class="form-check-input volume-radio" type="radio" name="volume<%= index %>" id="volume3ml<%= index %>" value="3ml" checked data-price="<%= product.priceOf3ml %>">
                 <label class="form-check-label" for="volume3ml<%= index %>">3ml</label>
               </div>
               <div class="form-check form-check-inline">
-                <input class="form-check-input volume-radio" type="radio" name="volume<%= index %>" id="volume5ml<%= index %>" value="5ml" data-price="500">
+                <input class="form-check-input volume-radio" type="radio" name="volume<%= index %>" id="volume5ml<%= index %>" value="5ml" data-price="<%= product.priceOf5ml %>">
                 <label class="form-check-label" for="volume5ml<%= index %>">5ml</label>
               </div>
               <!-- Add more volume options as needed -->
@@ -245,6 +245,8 @@
 
 <script src="/js/index/search.js"></script>
 <script src="/js/index/productCard.js"></script>
+<script src="/js/index/signoutRequest.js"></script>
+
 
     </body>
 </html>

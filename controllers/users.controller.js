@@ -12,15 +12,13 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 
 const fs = require('fs');
+const { URL } = require('url');
 
+const path = require('path');
 const passChecker = require('../util/passwordStrengthChecker');
 const connection = require('../util/database');
 const currentUser = require('../util/currentUser/user');
-// const { connect } = require('../Routes/indexRoutes.routes');
 
-// const getLogin = (req, res) => {
-//     res.render('./users/login.ejs', { errors: req.flash('errors') });
-// };
 const getLogin = (req, res) => {
     let { alertInfo } = req.cookies;
 
@@ -66,7 +64,7 @@ const postLogin = (req, res, next) => {
             };
             const token = jwt.sign(tokenData, process.env.JWT_PRIVATE_KEY, {
                 algorithm: 'RS256',
-                expiresIn: '1m',
+                expiresIn: '3m',
             });
 
             req.login(user, (error) => {
@@ -79,7 +77,21 @@ const postLogin = (req, res, next) => {
 
                 res.header('Authorization', `Bearer ${token}`);
                 res.cookie('accessToken', token);
-                res.redirect('/');
+
+                // Check if the request URL starts with "/products"
+                if (req.body.origin !== undefined) {
+                    const decodedOrigin = decodeURIComponent(req.body.origin);
+                    const { pathname } = new URL(decodedOrigin);
+                    // console.log(pathname);
+                    if (pathname.startsWith('/products')) {
+                        console.log(pathname);
+                        // Redirect back to the original URL
+                        res.redirect(pathname);
+                    }
+                } else {
+                    // Redirecting to Home Page
+                    res.redirect('/');
+                }
             });
         }
     })(req, res, next);
@@ -289,9 +301,15 @@ const postSignup = (req, res) => {
     }
 };
 
+const signOut = (req, res) => {
+    res.clearCookie('accessToken');
+    // Send a response indicating successful sign-out
+    res.sendStatus(200);
+};
 module.exports = {
     getLogin,
     getSignup,
     postLogin,
     postSignup,
+    signOut,
 };
