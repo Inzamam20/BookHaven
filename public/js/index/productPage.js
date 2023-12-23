@@ -32,6 +32,7 @@ radio5ml.addEventListener('change', updatePrice);
 
 // Initialize with the price of 3ml when the page loads
 updatePrice();
+
 const quantityInput = document.getElementById('quantityInput');
 
 // Function to decrease the quantity

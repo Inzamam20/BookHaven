@@ -24,7 +24,7 @@ const authenticateJWT = (req, res, next) => {
             const verified = jwt.verify(token, process.env.JWT_PUBLIC_KEY);
             // If the token is verified Successfully, set the user in the request
             req.user = verified;
-            // console.log(req.user);
+            // console.log(verified);
             // console.log('From the index MiddleWare!');
             next();
         } catch (error) {

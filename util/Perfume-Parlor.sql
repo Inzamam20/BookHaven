@@ -41,6 +41,36 @@ INSERT INTO `bottle` VALUES (3),(5),(10),(15);
 UNLOCK TABLES;
 
 --
+-- Table structure for table `cart`
+--
+
+DROP TABLE IF EXISTS `cart`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `cart` (
+  `email` varchar(45) NOT NULL,
+  `perfumeID` int NOT NULL,
+  ` bottleAmount` int NOT NULL,
+  `quantity` int NOT NULL,
+  KEY `EmailFK_idx` (`email`),
+  KEY `ProductFK_idx` (`perfumeID`),
+  KEY `BottleFK_idx` (` bottleAmount`),
+  CONSTRAINT `BottleFK` FOREIGN KEY (` bottleAmount`) REFERENCES `bottle` (`amount`),
+  CONSTRAINT `EmailFK` FOREIGN KEY (`email`) REFERENCES `users` (`email`) ON UPDATE CASCADE,
+  CONSTRAINT `ProductFK` FOREIGN KEY (`perfumeID`) REFERENCES `perfume` (`ID`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `cart`
+--
+
+LOCK TABLES `cart` WRITE;
+/*!40000 ALTER TABLE `cart` DISABLE KEYS */;
+/*!40000 ALTER TABLE `cart` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `orderdetails`
 --
 
@@ -52,8 +82,10 @@ CREATE TABLE `orderdetails` (
   `PerfumeID` int NOT NULL,
   `UnitPrice` int NOT NULL,
   `Quantity` int NOT NULL,
+  `BottleAmount` int DEFAULT NULL,
   KEY `OrderIDFK_idx` (`OrderID`),
   KEY `PerfumeIDFK_idx` (`PerfumeID`),
+  KEY `BottleFK_idx` (`BottleAmount`),
   CONSTRAINT `OrderIDFK` FOREIGN KEY (`OrderID`) REFERENCES `orders` (`orderID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `PerfumeIDFK` FOREIGN KEY (`PerfumeID`) REFERENCES `perfume` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -217,56 +249,6 @@ UNLOCK TABLES;
 --
 -- Dumping routines for database 'perfumeparlor2.0'
 --
-/*!50003 DROP FUNCTION IF EXISTS `getRandomOrderId` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` FUNCTION `getRandomOrderId`() RETURNS int
-    SQL SECURITY INVOKER
-BEGIN
-  DECLARE newOrderId INTEGER;
-  
-  REPEAT
-    SET newOrderId = FLOOR(RAND() * 1000000);  -- Adjust the range as needed
-  UNTIL NOT EXISTS (SELECT 1 FROM orders WHERE order_id = newOrderId) END REPEAT;
-  
-  RETURN newOrderId;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP FUNCTION IF EXISTS `getRandomPerfumeId` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` FUNCTION `getRandomPerfumeId`(productName VARCHAR(45)) RETURNS varchar(10) CHARSET utf8mb4
-BEGIN
-  DECLARE uniqueID VARCHAR(10);
-  
-  -- SET uniqueID = CONCAT( LEFT(productName, 4), SUBSTRING(REPLACE(UNIX_TIMESTAMP(NOW()), '-', ''), 1, 6) );
-  SET uniqueID = SUBSTRING(REPLACE(UNIX_TIMESTAMP(NOW()), '-', ''), 1, 10);
-  
-  RETURN uniqueID;
-  END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -277,4 +259,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-12-16 18:45:04
+-- Dump completed on 2023-12-16 23:16:18

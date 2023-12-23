@@ -9,6 +9,7 @@
 
     <!-- Bootstrap CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/font/bootstrap-icons.css" rel="stylesheet">
 
     <style>
         body {
@@ -82,6 +83,27 @@
                     <a href="/users/signup"> <button type="button" class="btn btn-warning me-3">Sign-up</button></a>
                 </div>
                 <% } else { %>
+
+                <!-- Cart Icon with Badge -->
+                <div class="dropdown text-end me-3">
+                    <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-cart3" style="font-size: 1.5rem;"></i>
+                        <!-- Display the badge only if there are items in the cart -->
+                        
+                            <span class="badge bg-danger">5</span>
+                        
+                    </a>
+                    <ul class="dropdown-menu text-small">
+                        <!-- Add your cart items here -->
+                        <li><a class="dropdown-item" href="#">Product 1</a></li>
+                        <li><a class="dropdown-item" href="#">Product 2</a></li>
+                        <!-- Add more items as needed -->
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#">View Cart</a></li>
+                    </ul>
+                </div>
+
                 <!-- Profile Picture -->
                 <div class="dropdown text-end me-3">
                     <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle"
@@ -97,6 +119,22 @@
                         <li><button type="button" class="dropdown-item" id="signOutButton">Sign out</button></li>
                     </ul>
                 </div>
+
+                 <!-- Cart Dropdown Button -->
+                 <!-- <div class="dropdown text-end me-3">
+                    <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-cart-fill"></i>
+                    </a>
+                    <ul class="dropdown-menu text-small">
+                        Add Cart Items Here
+                        <li><a class="dropdown-item" href="#">Product 1</a></li>
+                        <li><a class="dropdown-item" href="#">Product 2</a></li>
+                        ... Add more cart items dynamically ...
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#">View Cart</a></li>
+                    </ul>
+                </div> -->
                 <% } %>
 
             </header>
@@ -142,7 +180,8 @@
                         Add to Cart
                       </button>  
                       <% } else { %>                  
-                        <button type="button" class="btn btn-primary">Add to Cart</button>
+                        <!-- <button type="button" class="btn btn-primary" id="addToCartButton">Add to Cart</button> -->
+                        <button type="button" class="btn btn-primary" onclick="addToCart('<%= productInfo[0].ID %>')">Add to Cart</button>
                         <% } %>                  
                         <button type="button" class="btn btn-success">Buy Now</button>
                     </div>
@@ -192,22 +231,80 @@
     </div>
 </div>
 
-    </main>
+<!-- Out of Sotck Modal -->
+<div class="modal fade" id="outOfStockModal" tabindex="-1" aria-labelledby="outOfStockModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <!-- Bootstrap Icon for Error -->
+                <i class="bi bi-exclamation-triangle-fill text-danger fs-3 me-2"></i>
+                <h5 class="modal-title" id="outOfStockModalLabel">Out of Stock</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-danger">Sorry, the product is currently out of stock.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Success Cart Modal -->
+<div class="modal fade" id="successCart" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="successModalLabel">
+                      <i class="bi bi-cart-check-fill"></i>
+                    Product Added to Cart
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="lead">
+                    Your selected product has been added to the cart successfully!
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-bs-dismiss="modal">Continue Shopping</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</main>
+
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
     <!-- Bootstrap JS and Popper.js (for dropdowns, modals, etc.) -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="/js/bootstrap.bundle.min.js"></script>
 
+    
+
     <!-- Pass the price information to the external JavaScript file -->
-<script>
-    // Create a global variable to store price information
-    window.productPrices = {
-        priceOf3ml: '<%= productInfo[0].priceOf3ml %>',
-        priceOf5ml: '<%= productInfo[0].priceOf5ml %>'
-    };
-</script>
-    <script src="/js/index/productPage.js"></script>
-    <script src="/js/index/signoutRequest.js"></script>
+    <script>
+        // Create a global variable to store price information
+        window.productPrices = {
+            priceOf3ml: '<%= productInfo[0].priceOf3ml %>',
+            priceOf5ml: '<%= productInfo[0].priceOf5ml %>'
+        };
+    </script>
+
+<script src="/js/index/productPage.js"></script>
+<script src="/js/index/signoutRequest.js"></script>
+<!-- <script>
+    // Embedding server-side data into the script tag
+    var productId = '<%= productInfo[0].ID %>';
+</script> -->
+<script src="/js/index/cart.js"></script>
+
 
 </body>
 </html>

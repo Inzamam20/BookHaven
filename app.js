@@ -19,6 +19,7 @@ app.use(express.static('public'));
 app.use('/css', express.static(path.join(__dirname, 'node_modules', 'bootstrap', 'dist', 'css')));
 app.use('/js', express.static(path.join(__dirname, 'node_modules', 'bootstrap', 'dist', 'js')));
 app.use('/assets', express.static(path.join(__dirname, 'node_modules', 'bootstrap', 'dist', 'js')));
+app.use('/font', express.static(path.join(__dirname, 'node_modules', 'bootstrap-icons', 'font')));
 
 app.use(
     session({
@@ -59,10 +60,6 @@ require('./util/passport')(passport);
 
 // Test the Database Connection
 const connection = require('./util/database');
-
-app.get('/getUser', (req, res) => {
-    res.send(req.user);
-});
 
 const logger = (req, res, next) => {
     console.log(
@@ -109,10 +106,6 @@ app.use((req, res, next) => {
     res.status(404).render('invalidURL');
     // next('Requested URL was not found!');
 });
-
-// const authenticateToken = require('./middlewares/users.middlewares');
-
-// app.use(authenticateToken);
 
 // Overwriting Default Error Handling Middleware
 app.use((error, req, res, next) => {

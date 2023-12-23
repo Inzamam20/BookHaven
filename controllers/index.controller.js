@@ -1,7 +1,9 @@
+/* eslint-disable comma-dangle */
 /* eslint-disable no-param-reassign */
 
 const { getProducts, getParticularProduct } = require('../util/currentUser/product');
 const { getUserData } = require('../util/currentUser/user');
+const { checkProductAvailability, addProductToCart } = require('../util/queries/checkStock');
 const connection = require('../util/database');
 
 // Function to truncate the description to a specified length
@@ -75,7 +77,7 @@ const getProduct = async (req, res) => {
     try {
         productInfo = await getParticularProduct(name);
 
-        // console.log(productInfo[0]);
+        console.log(productInfo[0]);
         // console.log(req.user);
         productInfo[0].Thumbnail = productInfo[0].Thumbnail.toString('base64');
 
@@ -114,4 +116,47 @@ const searchPerfumes = (request, response) => {
     });
 };
 
-module.exports = { getIndex, getProduct, searchPerfumes };
+const cartController = async (req, res) => {
+    const { productId } = req.params;
+    const { quantity, volume } = req.body; // Access the quantity from the request body
+
+    // console.log(`Product Id: ${productId} \nQuantity: ${quantity}`);
+    // console.log('Selected Volume:', volume);
+    try {
+        // Check if the product is available in stock
+        const isProductAvailable = await checkProductAvailability(productId, quantity, volume);
+        console.log(`Product Available: ${isProductAvailable}\n`);
+
+        // If the product is already in the cart then return the volume that is already in the cart
+        // and send a request to check with new volume if available in stock then update the cart
+        // else if the product is not present in the cart then just insert into the cart
+
+        if (!isProductAvailable) {
+            return res.status(404).send('Product is out of stock');
+        }
+        // Product is Available
+        const userEmail = req.user.user;
+
+        await addProductToCart(
+            userEmail,
+            parseInt(productId, 10),
+            parseInt(volume, 10),
+            parseInt(quantity, 10)
+        );
+
+        return res.status(200).send('Product added to cart successfully');
+    } catch (error) {
+        console.log('From cartController Error:');
+        console.error(error);
+        return res.status(500).send('Internal Server Error');
+    }
+
+    // console.log(isProductAvailable);
+};
+
+module.exports = {
+    getIndex,
+    getProduct,
+    searchPerfumes,
+    cartController,
+};
