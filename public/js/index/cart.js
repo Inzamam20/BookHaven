@@ -3,18 +3,25 @@
 /* eslint-disable prefer-arrow-callback */
 function addToCart(productId) {
     const quantityInput = document.getElementById('quantityInput');
-    const currentQuantity = parseInt(quantityInput.value, 10);
+    let currentQuantity = 1;
+    if (quantityInput !== null) {
+        currentQuantity = parseInt(quantityInput.value, 10);
+    } else {
+        currentQuantity = 1;
+    }
 
     // Assuming Radio buttons with IDs 'radio3ml' and 'radio5ml'
     const radio3ml = document.getElementById('radio3ml');
     const radio5ml = document.getElementById('radio5ml');
 
     // Get the selected value
-    let selectedVolume;
-    if (radio3ml.checked) {
-        selectedVolume = radio3ml.value;
-    } else if (radio5ml.checked) {
-        selectedVolume = radio5ml.value;
+    let selectedVolume = 3;
+    if (radio3ml && radio5ml) {
+        if (radio3ml.checked) {
+            selectedVolume = radio3ml.value;
+        } else if (radio5ml.checked) {
+            selectedVolume = radio5ml.value;
+        }
     }
 
     // console.log(productId);

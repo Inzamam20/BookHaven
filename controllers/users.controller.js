@@ -81,6 +81,7 @@ const postLogin = (req, res, next) => {
                 // Check if the request URL starts with "/products"
                 if (req.body.origin !== undefined) {
                     const decodedOrigin = decodeURIComponent(req.body.origin);
+                    console.log(decodedOrigin);
                     const { pathname } = new URL(decodedOrigin);
                     // console.log(pathname);
                     if (pathname.startsWith('/products')) {

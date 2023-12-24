@@ -3,7 +3,11 @@
 
 const { getProducts, getParticularProduct } = require('../util/currentUser/product');
 const { getUserData } = require('../util/currentUser/user');
-const { checkProductAvailability, addProductToCart } = require('../util/queries/checkStock');
+const {
+    checkProductAvailability,
+    addProductToCart,
+    checkifProductExistInCart,
+} = require('../util/queries/checkStock');
 const connection = require('../util/database');
 
 // Function to truncate the description to a specified length
@@ -119,12 +123,30 @@ const searchPerfumes = (request, response) => {
 const cartController = async (req, res) => {
     const { productId } = req.params;
     const { quantity, volume } = req.body; // Access the quantity from the request body
+    const userEmail = req.user.user;
+    // @bottleAmount -> Bottle Volume
+    // @Quantity -> # of Bottle
 
     // console.log(`Product Id: ${productId} \nQuantity: ${quantity}`);
     // console.log('Selected Volume:', volume);
     try {
+        const existingResultInCart = await checkifProductExistInCart(userEmail, productId);
+        let totalExistingVolume = 0;
+        if (existingResultInCart !== null) {
+            existingResultInCart.forEach((row) => {
+                totalExistingVolume += row.bottleAmount * row.quantity;
+            });
+        }
+
+        console.log(`Total Existing Volume: ${totalExistingVolume}`);
+
         // Check if the product is available in stock
-        const isProductAvailable = await checkProductAvailability(productId, quantity, volume);
+        const isProductAvailable = await checkProductAvailability(
+            productId,
+            quantity,
+            volume,
+            totalExistingVolume
+        );
         console.log(`Product Available: ${isProductAvailable}\n`);
 
         // If the product is already in the cart then return the volume that is already in the cart
@@ -134,9 +156,8 @@ const cartController = async (req, res) => {
         if (!isProductAvailable) {
             return res.status(404).send('Product is out of stock');
         }
-        // Product is Available
-        const userEmail = req.user.user;
 
+        // Product is Available
         await addProductToCart(
             userEmail,
             parseInt(productId, 10),

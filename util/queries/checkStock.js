@@ -3,9 +3,33 @@
 /* eslint-disable arrow-body-style */
 const connection = require('../database');
 
-const checkProductAvailability = (productId, inputQuantity, inputVolume) => {
+// @bottleAmount -> Bottle Volume
+// @Quantity -> # of Bottle
+
+const checkifProductExistInCart = (email, perfumeID) => {
     return new Promise((resolve, reject) => {
-        const queryToCheckStock = `SELECT quantity FROM perfume WHERE id='${productId}'`;
+        const queryToCheckIfProductExist = `SELECT bottleAmount, quantity FROM cart WHERE email='${email}' AND perfumeID='${perfumeID}'`;
+        connection.query(queryToCheckIfProductExist, (err, results) => {
+            if (err) {
+                console.log(`Error from checkifProductExistInCart Function: \n ${err}`);
+                reject(err);
+            }
+
+            // Check if the results array is not empty before accessing elements
+            if (results && results.length > 0) {
+                resolve(results);
+            } else {
+                // If no results found, resolve with null or appropriate values
+                resolve(null);
+            }
+        });
+    });
+};
+
+const checkProductAvailability = (perfumeID, inputQuantity, inputVolume, existingVolume) => {
+    return new Promise((resolve, reject) => {
+        const queryToCheckStock = `SELECT quantity FROM perfume WHERE id='${perfumeID}'`;
+        // Quantity == Remaining Volume
 
         connection.query(queryToCheckStock, (err, results) => {
             if (err) {
@@ -16,7 +40,8 @@ const checkProductAvailability = (productId, inputQuantity, inputVolume) => {
             // console.log(`Input Quantity is: ${inputQuantity}`);
             // console.log(results);
             // Assuming 'results' is an array of objects, get the quantity from the first result
-            const remainingVolume = results.length > 0 ? results[0].quantity : 0;
+            let remainingVolume = results.length > 0 ? results[0].quantity : 0;
+            remainingVolume -= existingVolume;
 
             const clientDemand = inputQuantity * inputVolume;
 
@@ -27,8 +52,6 @@ const checkProductAvailability = (productId, inputQuantity, inputVolume) => {
 };
 
 const addProductToCart = (email, perfumeID, bottleAmount, quantity) => {
-    // @bottleAmount -> Bottle Volume
-    // @Quantity -> # of Bottle
     return new Promise((resolve, reject) => {
         console.log(bottleAmount);
         const queryStatement = 'INSERT INTO cart VALUES (?, ?, ?, ?)';
@@ -44,11 +67,10 @@ const addProductToCart = (email, perfumeID, bottleAmount, quantity) => {
                     reject(err);
                 }
 
-                console.log(result);
                 resolve(result);
             }
         );
     });
 };
 
-module.exports = { checkProductAvailability, addProductToCart };
+module.exports = { checkProductAvailability, addProductToCart, checkifProductExistInCart };

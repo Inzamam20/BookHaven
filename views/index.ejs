@@ -166,9 +166,17 @@
           
         </div>
         <div class="card-footer d-flex justify-content-between">
-          
+
           <!-- Add to Cart button on the left -->
-          <button type="button" class="btn btn-primary">Add to Cart</button>
+          <% if (currentUser === null) { %>
+            <a href="/users/login"> 
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#loginModal">
+                    Add to Cart
+                  </button>  
+            </a>
+              <% } else { %>                  
+                <button type="button" class="btn btn-primary" onclick="addToCart('<%= product.ID %>')">Add to Cart</button>
+                <% } %>           
           
           <!-- Buy Now button on the right -->
           <button type="button" class="btn btn-success">Buy Now</button>
@@ -238,9 +246,54 @@
     </div>
   </div> -->
 
-  
+
+  <!-- Out of Sotck Modal -->
+<div class="modal fade" id="outOfStockModal" tabindex="-1" aria-labelledby="outOfStockModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-header">
+              <!-- Bootstrap Icon for Error -->
+              <i class="bi bi-exclamation-triangle-fill text-danger fs-3 me-2"></i>
+              <h5 class="modal-title" id="outOfStockModalLabel">Out of Stock</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <p class="text-danger">Sorry, the product is currently out of stock.</p>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+      </div>
+  </div>
+</div>
+
+<!-- Success Cart Modal -->
+<div class="modal fade" id="successCart" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-header bg-success text-white">
+              <h5 class="modal-title" id="successModalLabel">
+                    <i class="bi bi-cart-check-fill"></i>
+                  Product Added to Cart
+              </h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <p class="lead">
+                  Your selected product has been added to the cart successfully!
+              </p>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-success" data-bs-dismiss="modal">Continue Shopping</button>
+          </div>
+      </div>
+  </div>
+</div>
 
 
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    
   <!-- <div class="b-example-divider"></div> -->
 </main>
 <script src="/js/bootstrap.bundle.min.js"></script>
