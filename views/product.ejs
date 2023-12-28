@@ -85,24 +85,15 @@
                 <% } else { %>
 
                 <!-- Cart Icon with Badge -->
-                <div class="dropdown text-end me-3">
-                    <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-cart3" style="font-size: 1.5rem;"></i>
+                <div class="text-end me-3">
+                    <a href="/cart/view" id="cartIcon" class="d-block link-body-emphasis text-decoration-none"
+                       style="font-size: 1.5rem;">
+                        <i class="bi bi-cart3"></i>
                         <!-- Display the badge only if there are items in the cart -->
-                        
-                            <span class="badge bg-danger">5</span>
-                        
+                        <span id="cartItemCount" class="badge bg-danger"></span>
                     </a>
-                    <ul class="dropdown-menu text-small">
-                        <!-- Add your cart items here -->
-                        <li><a class="dropdown-item" href="#">Product 1</a></li>
-                        <li><a class="dropdown-item" href="#">Product 2</a></li>
-                        <!-- Add more items as needed -->
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">View Cart</a></li>
-                    </ul>
                 </div>
+                
 
                 <!-- Profile Picture -->
                 <div class="dropdown text-end me-3">
@@ -183,7 +174,9 @@
                         <!-- <button type="button" class="btn btn-primary" id="addToCartButton">Add to Cart</button> -->
                         <button type="button" class="btn btn-primary" onclick="addToCart('<%= productInfo[0].ID %>')">Add to Cart</button>
                         <% } %>                  
-                        <button type="button" class="btn btn-success">Buy Now</button>
+                        <button type="button" class="btn btn-success">
+                                <a class="dropdown-item" href="/cart/view">Buy Now</a>
+                        </button>
                     </div>
             </div>
         </div>

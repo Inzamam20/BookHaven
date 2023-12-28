@@ -8,6 +8,10 @@ const {
     getProduct,
     searchPerfumes,
     cartController,
+    getCartCount,
+    getCartInformation,
+    removeCartItemController,
+    orderController,
 } = require('../controllers/index.controller');
 
 router.get('/', authenticateJWT, getIndex);
@@ -16,5 +20,13 @@ router.get('/products/:productName', authenticateJWT, getProduct);
 
 router.get('/get_data', searchPerfumes);
 router.post('/cart/add/:productId', authenticateJWT, cartController);
+
+router.get('/api/cart/count', authenticateJWT, getCartCount);
+
+router.get('/cart/view', authenticateJWT, getCartInformation);
+
+router.delete('/cart/remove/:perfumeId', authenticateJWT, removeCartItemController);
+
+router.post('/cart/confirmorder', authenticateJWT, orderController);
 
 module.exports = router;

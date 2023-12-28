@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cart</title>
+  <link rel="icon" href="/icons/title-icon.png" type="image/png">
+
+  <!-- Bootstrap CSS -->
+  <link href="/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <main>
+    <div class="content">
+      <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+        <a href="/" class="d-flex align-items-center ms-3 mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+            <svg class="bi me-1" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
+            <!-- <span class="fs-3">ook Heaven</span> -->
+            <span class="fs-3">Perfume Parlor</span>
+          </a>
+    
+          <div class="mx-auto">
+          <ul class="nav nav-pills">
+            <li class="nav-item"><a href="/" class="nav-link active" aria-current="page">Home</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">Features</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">Pricing</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">FAQs</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">About</a></li>
+          </ul>
+          </div>
+    
+    
+          <!-- Search Box --> 
+          <div class="col-12 col-lg-auto ms-3 mb-lg-0 me-3 position-relative">
+            <div class="dropdown">
+                <input type="search" class="form-control form-control-dark dropdown-toggle" id="autocomplete_search" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" placeholder="Search..." autocomplete="off">
+                <div class="dropdown-menu text-center" id="search_result" style="width: 100%;"></div>
+            </div>
+          </div>
+    
+    
+          <% if (currentUser.email === null) { %>
+                <!-- Log in and Sign Up Button -->
+                <div class="text-end">
+                  <a href="/users/login"> <button type="button" class="btn btn-outline-light me-2">Login</button></a>
+                  <a href="/users/signup"> <button type="button" class="btn btn-warning me-3">Sign-up</button></a>
+                </div>
+            <% } else { %>
+                  <!-- Profile Picture -->
+                  <div class="dropdown text-end me-3">
+                    <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                      <img src="data:image;base64, <%= currentUser.image %>" alt="img" width="40" height="40" class="rounded-circle">
+                    </a>
+                    <ul class="dropdown-menu text-small">
+                      <!-- <li><a class="dropdown-item" href="#">New project...</a></li> -->
+                      <li><a class="dropdown-item" href="#">Settings</a></li>
+                      <li><a class="dropdown-item" href="#">Profile</a></li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li><a class="dropdown-item" href="/users/signout" method="DELETE">Sign out</a></li>
+                    </ul>
+                  </div>
+              <% } %>
+      </header>
+    </div>
+
+    <div class="container mt-4">
+      <h2 class="mb-4">Shopping Cart</h2>
+
+      <table class="table table-dark table-hover" id="cartTable">
+        <thead>
+          <tr>
+            <th scope="col">Product</th>
+            <th scope="col">Volume</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Unit Price</th>
+            <th scope="col">Total</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for (let i = 0; i < cartItems.length; i++) { %>
+            <tr id="tableRow<%= i %>">
+              <td><%= cartItems[i].Name %></td>
+              <td><%= cartItems[i].bottleAmount %>ml</td>
+              <td>
+                <p class="fw-bold d-flex align-items-center">
+                  <button type="button" class="btn btn-outline-primary btn-sm me-1" onclick="decreaseQuantity(<%= i %>)">-</button>
+                  <input type="number" id="quantity<%= i %>" class="form-control form-control-sm me-1 w-25" min="1" value="<%= cartItems[i].quantity %>">
+                  <button type="button" class="btn btn-outline-primary btn-sm" onclick="increaseQuantity(<%= i %>)">+</button>
+                </p>
+              </td>
+              <td>&#2547;<%= cartItems[i].price %></td>
+              <td>&#2547;<%= cartItems[i].price * cartItems[i].quantity %></td>
+              <!-- <% // console.log(i); %> -->
+              <td>
+                <button type="button" class="btn btn-danger btn-sm" onclick="removeCart('<%= userEmail %>', '<%= cartItems[i].perfumeID %>', '<%= cartItems[i].bottleAmount %>', '<%= i %>', '<%= JSON.stringify(cartItems) %>')" data-index="<%= i %>" data-perfume-id="<%= cartItems[i].perfumeID %>" data-Perfume-Name="<%= cartItems[i].Name %>">
+                  Remove
+                </button>
+              </td>
+              
+            </tr>
+
+          <% } %>
+        </tbody>
+
+        <tfoot>
+          <tr>
+            <td colspan="4" class="text-end">Total Price:</td>
+            <td id="grandTotal">&#2547; <span id="totalAmount"></span></td>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
+
+      
+
+      <div class="text-end">
+        <button type="button" class="btn btn-primary" id="checkoutButton">Checkout</button>
+      </div>
+      
+
+    </div>
+  </main>
+<!-- Checkout modal -->
+  <div class="modal fade" id="checkoutModal" tabindex="-1" role="dialog" aria-labelledby="checkoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header justify-content-center">
+          <h5 class="modal-title" id="checkoutModalLabel">Checkout</h5>
+        </div>
+
+        <div class="modal-body">
+          <!-- Checkout Form -->
+          <form id="checkoutForm">
+            <div class="mb-3">
+              <label for="phoneNo" class="form-label">Phone Number</label>
+              <input type="tel" class="form-control" id="phoneNo" name="phoneNo" required>
+            </div>
+            <div class="mb-3">
+              <label for="address" class="form-label">Address</label>
+              <textarea class="form-control" id="address" name="address" rows="3" required></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="deliveryType" class="form-label">Delivery Type</label>
+              <select class="form-control" id="deliveryType" name="deliveryType" required>
+                <option value="" disabled selected>Select Delivery Type</option>
+                <option value="insideDhaka">Inside Dhaka - 60tk</option>
+                <option value="outsideDhaka">Outside Dhaka - 100tk</option>
+              </select>
+            </div>
+            <!-- Add more fields as needed -->
+  
+            <!-- Modal footer with buttons -->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" id="closeModalButton" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary" id="confirmOrderButton">Confirm Order</button>
+            </div>
+          
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+
+  <script>
+  // Calculate and display the total amount
+  function calculateTotal() {
+    let totalAmount = 0;
+    
+    <% for (let i = 0; i < cartItems.length; i++) { %>
+      totalAmount += <%= cartItems[i].price * cartItems[i].quantity %>;
+    <% } %>
+    
+    document.getElementById('totalAmount').innerText = totalAmount.toFixed(2);
+  }
+
+  // Call the function initially
+  calculateTotal();
+
+
+</script>
+
+
+
+
+  <!-- Include jQuery -->
+  <!-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> -->
+  <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="/js/bootstrap.bundle.min.js"></script>
+
+  <script src="/js/index/viewCart.js"></script>
+  <script src="/js/index/search.js"></script>
+  <script src="/js/index/checkoutModal.js"></script>
+
+  <script src="/js/index/signoutRequest.js"></script>
+
+
+  
+
+  
+
+
+
+
+</body>
+
+</html>

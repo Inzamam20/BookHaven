@@ -13,14 +13,22 @@ function loadData(query) {
 
             if (responseData.length > 0) {
                 for (let count = 0; count < responseData.length; count++) {
+                    console.log(responseData[0].name);
                     const regularExpression = new RegExp(`(${query})`, 'gi');
 
-                    html += `<a href="#" class="list-group-item list-group-item-action d-block">${`${responseData[
-                        count
-                    ].name.replace(
+                    // Static Search Option
+                    // html += `<a href="#" class="list-group-item list-group-item-action d-block">${`${responseData[
+                    //     count
+                    // ].name.replace(
+                    //     regularExpression,
+                    //     '<span class="text-primary fw-bold">$1</span>',
+                    // )}</a>`}`;
+
+                    // New Dynamic
+                    html += `<a href="/products/${responseData[0].name}" class="list-group-item list-group-item-action d-block">${`${responseData[count].name.replace(
                         regularExpression,
                         '<span class="text-primary fw-bold">$1</span>',
-                    )}</a>`}`;
+                    )}`}</a>`;
                 }
             } else {
                 html = '<a href="#" class="list-group-item list-group-item-action disabled">No results found</a>';

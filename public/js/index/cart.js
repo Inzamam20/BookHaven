@@ -1,6 +1,19 @@
 /* eslint-disable func-names */
 /* eslint-disable no-undef */
 /* eslint-disable prefer-arrow-callback */
+
+// Function to update the cart count
+const updateCartCount = async () => {
+    try {
+        const response = await fetch('/api/cart/count'); // Replace with your actual API endpoint
+        const data = await response.json();
+        const cartItemCount = data.count; // Assuming the response has a property 'count'
+        document.getElementById('cartItemCount').textContent = cartItemCount;
+    } catch (error) {
+        console.error('Error updating cart count:', error);
+    }
+};
+
 function addToCart(productId) {
     const quantityInput = document.getElementById('quantityInput');
     let currentQuantity = 1;
@@ -35,6 +48,9 @@ function addToCart(productId) {
             volume: selectedVolume,
         }, // Include the quantity in the request data
         success(response) {
+            // After adding a product to the cart successfully
+            updateCartCount();
+
             // After adding product to cart successfully
             $('#successCart').modal('show');
 
@@ -54,3 +70,7 @@ function addToCart(productId) {
         },
     });
 }
+
+$(document).ready(function () {
+    updateCartCount();
+});

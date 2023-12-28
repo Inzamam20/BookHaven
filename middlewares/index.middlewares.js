@@ -34,7 +34,7 @@ const authenticateJWT = (req, res, next) => {
                 // So clearing the expired token cookie, so it's not sent in future requests
                 res.removeHeader('authorization');
                 res.clearCookie('accessToken');
-                next();
+                res.render('/users/login');
             } else {
                 next();
             }

@@ -64,7 +64,7 @@ const postLogin = (req, res, next) => {
             };
             const token = jwt.sign(tokenData, process.env.JWT_PRIVATE_KEY, {
                 algorithm: 'RS256',
-                expiresIn: '30m',
+                expiresIn: '10h',
             });
 
             req.login(user, (error) => {
