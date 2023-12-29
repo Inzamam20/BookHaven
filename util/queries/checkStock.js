@@ -271,6 +271,20 @@ const clearCart = async (email) => {
     });
 };
 
+const getAllOrders = async (email) => {
+    const query = `SELECT orderID, perfumeTotal AS Total, deliveryFee, Status FROM orders WHERE email='${email}'`;
+    return new Promise((resolve, reject) => {
+        connection.query(query, (err, results) => {
+            if (err) {
+                console.log(`Error Retrieving Order Table from database ${err.message}`);
+                reject(err);
+            }
+
+            resolve(results);
+        });
+    });
+};
+
 module.exports = {
     checkProductAvailability,
     addProductToCart,
@@ -282,4 +296,5 @@ module.exports = {
     addOrder,
     addOrderDetails,
     clearCart,
+    getAllOrders,
 };

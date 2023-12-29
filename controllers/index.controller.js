@@ -16,8 +16,11 @@ const {
     addOrder,
     addOrderDetails,
     clearCart,
+    getAllOrders,
 } = require('../util/queries/checkStock');
 const connection = require('../util/database');
+
+const transporter = require('../util/nodemailer');
 
 // Function to truncate the description to a specified length
 function truncateDescription(description, maxLength) {
@@ -35,7 +38,7 @@ async function fetchProductData() {
         products = await getProducts();
 
         products.forEach((product) => {
-            product.description = truncateDescription(product.Description, 95);
+            product.description = truncateDescription(product.Description, 90);
 
             // Price Calculation
             product.priceOf3ml = product.PPml * 3;
@@ -310,9 +313,64 @@ const orderController = async (req, res) => {
 
         await clearCart(orderData.email);
 
-        res.status(200).json({ message: 'Order Placed Successfully!' });
+        await fetchUserData(req.user.user);
+
+        const mailOptions = {
+            from: process.env.MAIL_USERNAME,
+            to: orderData.email,
+            subject: 'Perfume Parlor order placed Successfully!',
+            text: 'Dear User\n\nYour order of Perfume Parlor has been placed Successfully\n\nThanks for purchasing with us',
+        };
+
+        console.log(transporter); // Add this line
+        transporter.sendMail(mailOptions, (error, info) => {
+            console.log('Callback executed'); // Add this line
+            if (error) {
+                console.log('Error Occured: ', error);
+            } else {
+                console.log(`Email sent: ${info.response.toString()}`);
+                // console.log(`Your verification code is: ${code}`);
+            }
+        });
+
+        // Introduce a delay of 1 second using setTimeout
+        // setTimeout(() => {
+        //     res.status(200).json({ success: true, message: 'Order Placed Successfully!' });
+        // }, 1000);
+        res.status(200).json({ success: true, message: 'Order Placed Successfully!' });
     } catch (error) {
         console.error(error);
+        res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+};
+/*  @Status
+        1 pending
+        2 processing
+        3 shipping
+        4 delivered
+        5 cancelled
+    */
+const viewOrdersController = async (req, res) => {
+    try {
+        await fetchUserData(req.user.user);
+        const orders = await getAllOrders(req.user.user);
+        orders.forEach((order) => {
+            if (order.Status === 1) {
+                order.Status = 'Pending';
+            } else if (order.Status === 2) {
+                order.Status = 'Processing';
+            } else if (order.Status === 3) {
+                order.Status = 'Shipping';
+            } else if (order.Status === 4) {
+                order.Status = 'Delivered';
+            } else if (order.Status === 5) {
+                order.Status = 'Cancelled';
+            }
+        });
+        console.log(orders);
+        res.render('orders', { currentUser, orders });
+    } catch (error) {
+        console.log(`Error from View Orders Controller: ${error.toString()}`);
     }
 };
 
@@ -325,4 +383,5 @@ module.exports = {
     getCartInformation,
     removeCartItemController,
     orderController,
+    viewOrdersController,
 };

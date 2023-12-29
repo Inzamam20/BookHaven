@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-undef */
 function decreaseQuantity(index) {
@@ -46,6 +47,8 @@ function removeCart(email, perfumeID, volume, index, cartItems) {
                 const object = JSON.parse(cartItems);
                 // Handle success
                 console.log('Product Removed from Cart successfully!');
+
+                console.log(response);
 
                 // Reload the page
                 location.reload();

@@ -12,6 +12,7 @@ const {
     getCartInformation,
     removeCartItemController,
     orderController,
+    viewOrdersController,
 } = require('../controllers/index.controller');
 
 router.get('/', authenticateJWT, getIndex);
@@ -28,5 +29,7 @@ router.get('/cart/view', authenticateJWT, getCartInformation);
 router.delete('/cart/remove/:perfumeId', authenticateJWT, removeCartItemController);
 
 router.post('/cart/confirmorder', authenticateJWT, orderController);
+
+router.get('/cart/order', authenticateJWT, viewOrdersController);
 
 module.exports = router;

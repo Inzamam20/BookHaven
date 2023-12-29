@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>User Orders</title>
+  <link rel="icon" href="/icons/title-icon.png" type="image/png">
+
+  <!-- Bootstrap CSS -->
+  <link href="/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <main>
+    <div class="content">
+        <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+            <a href="/" class="d-flex align-items-center ms-3 mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+              <svg class="bi me-1" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
+              <!-- <span class="fs-3">ook Heaven</span> -->
+              <span class="fs-3">Perfume Parlor</span>
+            </a>
+      
+            <div class="mx-auto">
+            <ul class="nav nav-pills">
+              <li class="nav-item"><a href="/" class="nav-link active" aria-current="page">Home</a></li>
+              <li class="nav-item"><a href="#" class="nav-link">Features</a></li>
+              <li class="nav-item"><a href="#" class="nav-link">Pricing</a></li>
+              <li class="nav-item"><a href="#" class="nav-link">FAQs</a></li>
+              <li class="nav-item"><a href="#" class="nav-link">About</a></li>
+            </ul>
+            </div>
+      
+      
+            <!-- Search Box --> 
+            <form class="col-12 col-lg-auto ms-3 mb-lg-0 me-3" role="search">
+              <input type="search" class="form-control form-control-dark text-bg-dark" placeholder="Search..." aria-label="Search">
+            </form>
+      
+      
+            <% if (currentUser.email === null) { %>
+                  <!-- Log in and Sign Up Button -->
+                  <div class="text-end">
+                    <a href="/users/login"> <button type="button" class="btn btn-outline-light me-2">Login</button></a>
+                    <a href="/users/signup"> <button type="button" class="btn btn-warning me-3">Sign-up</button></a>
+                  </div>
+              <% } else { %>
+                    <!-- Profile Picture -->
+                    <div class="dropdown text-end me-3">
+                      <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="data:image;base64, <%= currentUser.image %>" alt="img" width="40" height="40" class="rounded-circle">
+                      </a>
+                      <ul class="dropdown-menu text-small">
+                        <!-- <li><a class="dropdown-item" href="#">New project...</a></li> -->
+                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="/users/signout" method="DELETE">Sign out</a></li>
+                      </ul>
+                    </div>
+                <% } %>
+      
+          </header>
+    </div>
+
+    <!-- Orders Table -->
+    <div class="container mt-5">
+        <h2 class="mb-4">Your Orders</h2>
+        <table class="table table-dark table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Order ID</th>
+              <th scope="col">Total Amount</th>
+              <th scope="col">Delivery Fee</th>
+              <th scope="col">Order Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Sample Data (Replace with actual data from your server) -->
+            <% orders.forEach(order => { %>
+              <tr>
+                <td><%= order.orderID %></td>
+                <td><%= order.Total %></td>
+                <td><%= order.deliveryFee %></td>
+                <td>
+                  <!-- Use EJS to dynamically set Bootstrap classes based on order status -->
+                  <% if (order.Status === 'Pending') { %>
+                    <span class="badge bg-warning text-dark d-inline-block text-center w-25"><%= order.Status %></span>
+                  <% } else if (order.Status === 'Processing') { %>
+                    <span class="badge bg-primary d-inline-block text-center w-25"><%= order.Status %></span>
+                  <% } else if (order.Status === 'Shipping') { %>
+                    <span class="badge bg-info d-inline-block text-center w-25"><%= order.Status %></span>
+                  <% } else if (order.Status === 'Delivered') { %>
+                    <span class="badge bg-success d-inline-block text-center w-25"><%= order.Status %></span>
+                  <% } else if (order.Status === 'Cancelled') { %>
+                    <span class="badge bg-danger d-inline-block text-center w-25"><%= order.Status %></span>
+                  <% } else { %>
+                    <!-- Handle other statuses here -->
+                    <%= order.Status %>
+                  <% } %>
+                </td>
+              </tr>
+            <% }); %>
+            <!-- Add more rows as needed -->
+          </tbody>
+        </table>
+      </div>
+  
+
+  </main>
+
+  <!-- Include jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+  <script src="/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

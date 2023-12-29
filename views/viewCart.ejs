@@ -9,6 +9,8 @@
 
   <!-- Bootstrap CSS -->
   <link href="/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/font/bootstrap-icons.css" rel="stylesheet">
+
 </head>
 
 <body>
@@ -40,6 +42,13 @@
                 <div class="dropdown-menu text-center" id="search_result" style="width: 100%;"></div>
             </div>
           </div>
+
+          <!-- View Order -->
+          <a href="/cart/order" id="cartIcon" class="d-block link-body-emphasis text-decoration-none me-3" style="font-size: 1.5rem;">
+            <i class="bi bi-box"></i>
+            <!-- Display the badge only if there are items in the cart -->
+            <span id="cartItemCount" class="badge bg-danger"></span>
+          </a>
     
     
           <% if (currentUser.email === null) { %>

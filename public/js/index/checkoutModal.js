@@ -31,12 +31,15 @@ function submitCheckoutForm() {
         data: formData,
         // eslint-disable-next-line no-unused-vars
         success(response) {
-            // Handle success response
-            location.reload();
-            // $('#successModal').modal('show');
+            if (response.success) {
+                // Handle success response
+                // console.log('asdasd');
+                location.reload();
+            }
         },
         error() {
             // Handle error response
+            console.log('Error submitting the order');
             console.error('Error submitting order:');
         },
     });
@@ -44,7 +47,6 @@ function submitCheckoutForm() {
 
 // Attach event listeners to the modal and form
 $(document).ready(() => {
-    console.log('Inzamam');
     // Open the modal when the Checkout button is clicked
     document.getElementById('checkoutButton').addEventListener('click', openCheckoutModal);
 
