@@ -322,34 +322,24 @@ const orderController = async (req, res) => {
             text: 'Dear User\n\nYour order of Perfume Parlor has been placed Successfully\n\nThanks for purchasing with us',
         };
 
-        console.log(transporter); // Add this line
-        transporter.sendMail(mailOptions, (error, info) => {
-            console.log('Callback executed'); // Add this line
-            if (error) {
-                console.log('Error Occured: ', error);
-            } else {
-                console.log(`Email sent: ${info.response.toString()}`);
-                // console.log(`Your verification code is: ${code}`);
-            }
-        });
+        // To send Mail
+        // transporter.sendMail(mailOptions, (error, info) => {
+        //     console.log('Callback executed'); // Add this line
+        //     if (error) {
+        //         console.log('Error Occured: ', error);
+        //     } else {
+        //         console.log(`Email sent: ${info.response.toString()}`);
+        //         // console.log(`Your verification code is: ${code}`);
+        //     }
+        // });
 
-        // Introduce a delay of 1 second using setTimeout
-        // setTimeout(() => {
-        //     res.status(200).json({ success: true, message: 'Order Placed Successfully!' });
-        // }, 1000);
         res.status(200).json({ success: true, message: 'Order Placed Successfully!' });
     } catch (error) {
         console.error(error);
         res.status(500).json({ success: false, message: 'Internal Server Error' });
     }
 };
-/*  @Status
-        1 pending
-        2 processing
-        3 shipping
-        4 delivered
-        5 cancelled
-    */
+
 const viewOrdersController = async (req, res) => {
     try {
         await fetchUserData(req.user.user);

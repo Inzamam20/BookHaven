@@ -4,6 +4,8 @@ const fs = require('fs');
 
 const connection = require('../util/database');
 
+const { viewAllOrders, updateOrderStatusById } = require('../util/queries/admin/queries');
+
 const getDashboard = (req, res) => {
     res.render('./admin/dashboard.ejs');
 };
@@ -102,9 +104,37 @@ const postAddPerfume = (req, res) => {
     );
 };
 
+const getOrders = async (req, res) => {
+    try {
+        const orders = await viewAllOrders();
+        console.log(orders);
+        res.render('./admin/options/orders', { orders });
+    } catch (error) {
+        console.log(error.toString());
+    }
+};
+
+const updateOrderStatusController = async (req, res) => {
+    const { orderId } = req.params; // Extract order ID from the URL
+    const { newStatus } = req.body;
+
+    console.log(`Order ID: ${orderId}`);
+    // console.log(req.body);
+    console.log(newStatus);
+
+    try {
+        await updateOrderStatusById(orderId, newStatus);
+        res.status(200).json({ success: true, message: "Never Include contentType: 'application/json'" });
+    } catch (error) {
+        console.log(error.toString());
+    }
+};
+
 module.exports = {
     getDashboard,
     getAddPerfume,
     postAddPerfume,
     // getani,
+    getOrders,
+    updateOrderStatusController,
 };

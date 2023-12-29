@@ -15,6 +15,8 @@ const {
     getAddPerfume,
     postAddPerfume,
     // getani,
+    getOrders,
+    updateOrderStatusController,
 } = require('../controllers/admin.controller');
 
 // // Define the Storage
@@ -62,6 +64,9 @@ router.get('/dashboard', getDashboard);
 router.get('/addPerfume', getAddPerfume);
 router.post('/addPerfume', upload.single('perfumeImage'), postAddPerfume);
 
+router.get('/orders', getOrders);
+
+router.post('/api/orders/updateOrderStatus/:orderId', updateOrderStatusController);
 // router.get('/anitesting', getani);
 
 module.exports = router;

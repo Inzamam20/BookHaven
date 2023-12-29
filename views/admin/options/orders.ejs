@@ -1,19 +1,16 @@
 <!doctype html>
 <html lang="en" data-bs-theme="dark">
   <head>
-    
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.118.2">
     <title>Dashboard Template · Bootstrap v5.3</title>
-    
+
     <link rel="stylesheet" href="/css/dashboard.css">
     <link rel="stylesheet" href="/css/bootstrap.min.css">
-    
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- <script src="/js/dashboard.js"></script> -->
 
     <style>
 
@@ -99,7 +96,7 @@
   <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white" href="/">Perfume Parlour</a>
 
   <div id="navbarSearch" class="navbar-search w-100 collapse">
-    <!-- <input class="form-control w-100 rounded-0 border-0" type="text" placeholder="Search" aria-label="Search"> -->
+    <input class="form-control w-100 rounded-0 border-0" type="text" placeholder="Search" aria-label="Search">
   </div>
 </header>
 
@@ -107,26 +104,25 @@
   <div class="row">
     <div class="sidebar border border-right col-md-3 col-lg-2 p-0 bg-body-tertiary">
       <div class="offcanvas-md offcanvas-end bg-body-tertiary" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
-        
-        <div class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3 overflow-y-auto">
 
+        <div class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3 overflow-y-auto">
           <ul class="nav flex-column">
             <li class="nav-item">
-              <a class="nav-link d-flex align-items-center gap-2" href="/admin/dashboard">
+              <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="/admin/dashboard">
                 <svg class="bi"><use xlink:href="#house-fill"/></svg>
                 Dashboard
               </a>
             </li>
 
             <li class="nav-item">
-              <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="#">
+              <a class="nav-link d-flex align-items-center gap-2" href="/admin/addPerfume">
                 <i class="bi bi-file-plus-fill"></i>
                                 Add Perfume
               </a>
             </li>
 
             <li class="nav-item">
-              <a class="nav-link d-flex align-items-center gap-2" href="/admin/orders">
+              <a class="nav-link d-flex align-items-center gap-2" href="#">
                 <svg class="bi"><use xlink:href="#file-earmark"/></svg>
                 Orders
               </a>
@@ -138,7 +134,6 @@
                 Products
               </a>
             </li>
-
             <li class="nav-item">
               <a class="nav-link d-flex align-items-center gap-2" href="#">
                 <svg class="bi"><use xlink:href="#people"/></svg>
@@ -159,11 +154,40 @@
             </li>
           </ul>
 
-        
-          
-          
+          <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-body-secondary text-uppercase">
+            <span>Saved reports</span>
+            <a class="link-secondary" href="#" aria-label="Add a new report">
+              <svg class="bi"><use xlink:href="#plus-circle"/></svg>
+            </a>
+          </h6>
+          <ul class="nav flex-column mb-auto">
+            <li class="nav-item">
+              <a class="nav-link d-flex align-items-center gap-2" href="#">
+                <svg class="bi"><use xlink:href="#file-earmark-text"/></svg>
+                Current month
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link d-flex align-items-center gap-2" href="#">
+                <svg class="bi"><use xlink:href="#file-earmark-text"/></svg>
+                Last quarter
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link d-flex align-items-center gap-2" href="#">
+                <svg class="bi"><use xlink:href="#file-earmark-text"/></svg>
+                Social engagement
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link d-flex align-items-center gap-2" href="#">
+                <svg class="bi"><use xlink:href="#file-earmark-text"/></svg>
+                Year-end sale
+              </a>
+            </li>
+          </ul>
 
-          <hr class="my-5">
+          <hr class="my-3">
 
           <ul class="nav flex-column mb-auto">
             <li class="nav-item">
@@ -179,7 +203,6 @@
               </a>
             </li>
           </ul>
-
         </div>
       </div>
     </div>
@@ -187,157 +210,86 @@
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
 
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Add Perfume</h1>
+        <h1 class="h2">Orders</h1>
+
       </div>
 
-      <div class="content">
-        <div class="container mt-5">
-    
-          <form action="/admin/addPerfume" id="addPerfumeForm" method="POST" enctype="multipart/form-data">
+      <!-- Orders Table -->
 
-
-            <div class="row mb-3 h-100">
-
-                <div class="col-md-6">
-                    <label for="perfumeName" class="form-label">Perfume Name:</label>
-                    <input type="text" class="form-control" id="perfumeName" name="perfumeName" required>
-                </div>
-
-                <div class="col-md-6">
-                    <label for="inputGroupFile04" class="form-label">Perfume Image:</label>
-                    <div class="input-group">
-                        <input type="file" class="form-control" id="perfumeImage" name="perfumeImage" aria-describedby="inputGroupFileAddon04" aria-label="Upload" onchange="previewImage(this);" required>
-                        <!-- <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">Upload</button> -->
+      <div class="container mt-5">
+        <table class="table table-dark table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Order ID</th>
+              <th scope="col">User Email</th>
+              <th scope="col">Total Amount</th>
+              <th scope="col">Order Status</th>
+              <th scope="col">Actions</th> <!-- Added column for dropdown -->
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Sample Data (Replace with actual data from your server) -->
+            <% orders.forEach(order => { %>
+              <tr>
+                <td><%= order.orderID %></td>
+                <td><%= order.email %></td>
+                <td><%= order.Total %></td>
+                <td>
+                  <!-- Use EJS to dynamically set Bootstrap classes based on order status -->
+                  <% if (order.Status === 'Pending') { %>
+                    <span class="badge bg-warning text-dark d-inline-block text-center w-50"><%= order.Status %></span>
+                  <% } else if (order.Status === 'Processing') { %>
+                    <span class="badge bg-primary d-inline-block text-center w-50"><%= order.Status %></span>
+                  <% } else if (order.Status === 'Shipping') { %>
+                    <span class="badge bg-info d-inline-block text-center w-50"><%= order.Status %></span>
+                  <% } else if (order.Status === 'Delivered') { %>
+                    <span class="badge bg-success d-inline-block text-center w-50"><%= order.Status %></span>
+                  <% } else if (order.Status === 'Cancelled') { %>
+                    <span class="badge bg-danger d-inline-block text-center w-50"><%= order.Status %></span>
+                  <% } else { %>
+                    <!-- Handle other statuses here -->
+                    <%= order.Status %>
+                  <% } %>
+                </td>
+                <td>
+                  <!-- Dropdown for changing order status -->
+                  <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton<%= order.orderID %>" data-order-id="<%= order.orderID %>" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Change Status
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton<%= order.orderID %>">
+                      <!-- Replace values in the data-status attribute with actual server values -->
+                      <a class="dropdown-item" href="#" data-status="Pending" <%= order.Status === 'Pending' ? 'selected' : '' %>>Pending</a>
+                      <a class="dropdown-item" href="#" data-status="Processing" <%= order.Status === 'Processing' ? 'selected' : '' %>>Processing</a>
+                      <a class="dropdown-item" href="#" data-status="Shipping" <%= order.Status === 'Shipping' ? 'selected' : '' %>>Shipping</a>
+                      <a class="dropdown-item" href="#" data-status="Delivered" <%= order.Status === 'Delivered' ? 'selected' : '' %>>Delivered</a>
+                      <a class="dropdown-item" href="#" data-status="Cancelled" <%= order.Status === 'Cancelled' ? 'selected' : '' %>>Cancelled</a>
                     </div>
-                </div>
-
-            </div>
-            <!--   -->
-            
-            <div class="row mb-3">
-
-                <div class="col-md-6">
-                    <label for="brand" class="form-label">Brand:</label>
-                    <input type="text" class="form-control" id="brand" name="brand" required>
-                </div>
-
-                <div class="col-md-6">
-                    <label for="price" class="form-label">Price:</label>
-                    <input type="number" class="form-control" id="price" name="price" min="0" step="1" required>
-                </div>
-                
-            </div>
-
-            <div class="row mb-3">
-
-              <div class="col-md-6">
-                <label for="quantity" class="form-label">Quantity:</label>
-                <input type="number" class="form-control" id="quantity" name="quantity" min="0" step="1" required>
-              </div>
-
-              <div class="col-md-6">
-                <label for="quantity" class="form-label">Select Volume:</label>
-                <div class="form-floating-lg">
-
-                  <select class="form-select " id="floatingSelect" name="selectedVolume" aria-label="Floating label select example">
-                    <!-- <option selected>Select Volume</option> -->
-                    <option value="1">3ml</option>
-                    <option value="2">5ml</option>
-                    <option value="3">500ml</option>
-                  </select>
-                  <!-- <label for="floatingSelect">Select Volume</label> -->
-                </div>
-
-              </div>
-              
-          </div>
-            
-          <!-- <div class="row mb-3 mt-5"> -->
-            <div class="form-floating mt-4 mb-3">
-              <textarea maxlength="900" class="form-control" placeholder="Leave a comment here" id="description" name="description" style="height: 100px"></textarea>
-              <label class="ms-2" for="floatingTextarea2">Perfume Description</label>
-            </div>
-          <!-- </div> -->
-
-
-          </div>
-
-              <!-- <button type="submit" class="btn mx-3 mb-3 btn-primary btn-lg" name="modal" onclick="showModal()">Add Perfume</button> -->
-              <button type="submit" class="btn mx-3 mb-3 btn-primary btn-lg" name="modal">Add Perfume</button>
-          </form>
-
-
-<canvas class="my-4 w-100" id="myChart" width="900" height="395">
-
-  <div class="form-floating mt-4 mb-3">
-    <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
-    <label class="ms-2" for="floatingTextarea2">Perfume Description</label>
-  </div>
-
-</canvas>
-
-        <!-- <% if (dbSuccess === 'true') { %> -->
-          <!-- <div class="d-md-flex justify-content-center">
-
-            <div class="alert alert-success" role="alert">
-              Your product '<%= perfumeName %>' has been added to Database Successfully!
-            </div>
-          </div> -->
-
-
-          <div class="modal fade show" id="success" data-bs-toggle="modal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h1 class="modal-title fs-5" id="successModalLabel">Successful</h1>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  Your product '<%= perfumeName %>' has been added to Database Successfully!
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
-              </div>
-            </div>
-          </div>
-            
-          <% } %>
-
-
+                  </div>
+                </td>
+              </tr>
+            <% }); %>
+            <!-- Add more rows as needed -->
+          </tbody>
+        </table>
       </div>
 
-      
-      
+      <canvas class="my-4 w-100" id="myChart" width="900" height="395">
 
+        <div class="form-floating mt-4 mb-3">
+          <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+          <label class="ms-2" for="floatingTextarea2">Perfume Description</label>
+        </div>
 
-      
-    </main>
+      </canvas>
 
-    <!-- <main class="col-md-9 ms-sm-auto col-lg-1 px-md-4"></main> -->
-
-    
-  </div>
-</div>
-
-
-
+          <!-- Include jQuery -->
+            <!-- Include jQuery -->
+  <!-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> -->
+  <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="/js/bootstrap.bundle.min.js"></script>
-<script src="/js/bootstrap.bundle.js"></script>
-<script src="/js/admin/successModal.js"></script>
-<!-- <script>
-  const myModal = new bootstrap.Modal(document.getElementById('success'));
-  myModal.show();
-</script> -->
-
-<!-- <script>
-  document.getElementById('addPerfumeForm').addEventListener('submit', (event) => {
-                event.preventDefault(); // Prevents the form from submitting the traditional way
-                // console.log(Document.getElementById());
-                const myModal = new bootstrap.Modal(document.getElementById('successModal'));
-                myModal.show();
-  });
-</script> -->
+<script src="/js/admin/updateOrderStatus.js"></script>
 
 
     </body>
