@@ -177,9 +177,9 @@ const getCartDetails = (email) => {
     });
 };
 
-const removeCartItem = async (email, perfumeID, volume) => {
+const removeCartItem = async (email, perfumeID, volume, quantity) => {
     return new Promise((resolve, reject) => {
-        const queryToDelete = `DELETE FROM cart WHERE email='${email}' AND perfumeID='${perfumeID}' AND bottleAmount='${volume}'`;
+        const queryToDelete = `DELETE FROM cart WHERE email='${email}' AND perfumeID='${perfumeID}' AND bottleAmount='${volume}' AND quantity='${quantity}'`;
 
         connection.query(queryToDelete, (err, results) => {
             if (err) {

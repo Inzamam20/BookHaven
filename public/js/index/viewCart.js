@@ -30,7 +30,7 @@ function increaseQuantity(index) {
     // You may want to update the unit total and total here
 }
 
-function removeCart(email, perfumeID, volume, index, cartItems) {
+function removeCart(email, perfumeID, volume, index, cartItems, quantity) {
     // console.log(email);
     // console.log(perfumeID);
     // console.log(volume);
@@ -41,6 +41,7 @@ function removeCart(email, perfumeID, volume, index, cartItems) {
         data: {
             email,
             volume,
+            quantity,
         },
         success(response) {
             if (response.success) {

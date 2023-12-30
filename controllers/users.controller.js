@@ -62,6 +62,7 @@ const postLogin = (req, res, next) => {
                 user: user.email,
                 lName: user.lastname,
             };
+
             const token = jwt.sign(tokenData, process.env.JWT_PRIVATE_KEY, {
                 algorithm: 'RS256',
                 expiresIn: '10h',
@@ -126,11 +127,6 @@ const getSignup = (req, res) => {
     // const errorsArray = req.flash('errors');
 
     // console.log(errorsArray);
-
-    // res.render('./users/new-signup.ejs', {
-    //     errorAlert,
-    //     errorsArray,
-    // });
 
     res.render('./users/signup.ejs', {
         errorAlert: req.flash('alertInfo'),

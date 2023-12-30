@@ -239,6 +239,8 @@ const getCartInformation = async (req, res) => {
 
         const total = grandTotal;
 
+        console.log(cartItems);
+
         res.render('viewCart.ejs', {
             currentUser,
             cartItems,
@@ -253,10 +255,10 @@ const getCartInformation = async (req, res) => {
 const removeCartItemController = async (req, res) => {
     const userEmail = req.user.user;
     const { perfumeId } = req.params;
-    const { volume, perfumeName } = req.body;
+    const { volume, perfumeName, quantity } = req.body;
 
     try {
-        const result = await removeCartItem(userEmail, perfumeId, volume);
+        const result = await removeCartItem(userEmail, perfumeId, volume, quantity);
 
         // Send a response based on the result
         if (result.affectedRows > 0) {
@@ -323,15 +325,15 @@ const orderController = async (req, res) => {
         };
 
         // To send Mail
-        // transporter.sendMail(mailOptions, (error, info) => {
-        //     console.log('Callback executed'); // Add this line
-        //     if (error) {
-        //         console.log('Error Occured: ', error);
-        //     } else {
-        //         console.log(`Email sent: ${info.response.toString()}`);
-        //         // console.log(`Your verification code is: ${code}`);
-        //     }
-        // });
+        transporter.sendMail(mailOptions, (error, info) => {
+            console.log('Callback executed'); // Add this line
+            if (error) {
+                console.log('Error Occured: ', error);
+            } else {
+                console.log(`Email sent: ${info.response.toString()}`);
+                // console.log(`Your verification code is: ${code}`);
+            }
+        });
 
         res.status(200).json({ success: true, message: 'Order Placed Successfully!' });
     } catch (error) {
